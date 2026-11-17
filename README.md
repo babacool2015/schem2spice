@@ -24,7 +24,7 @@ RapidOCR for text, ngspice for simulation. No cloud services.
 ## Quick start
 
 ```sh
-git clone https://github.com/<you>/schem2spice && cd schem2spice
+git clone https://github.com/babacool2015/schem2spice && cd schem2spice
 make install     # ngspice (Homebrew or apt), Python venv, OCR models, then a check
 make test        # engine tests; tests that need a manual skip themselves
 ```
