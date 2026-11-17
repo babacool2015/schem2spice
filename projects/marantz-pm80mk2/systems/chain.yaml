@@ -113,3 +113,56 @@ cases:
     checks:
       - {kind: gain, out: L, f: 1000, db: 102.17, tol_db: 1.5, spec: "MC sensitivity 220 uV for 100 W / 8 ohm"}
       - {kind: zin, source: VINL, f: 1000, ohms: 100, tol: 0.15, spec: "MC input impedance 100 ohm"}
+
+# Charts (schem2spice plot / system): left channel; the right simulates identically.
+plots:
+  - name: line
+    title: CD input gain, jack to 8 ohm speaker (volume full)
+    ylabel: Gain (dB)
+    x: [1, 1000000]
+    y: [10, 50]
+    ystep: 5
+    curves:
+      - {case: line, label: CD input}
+    bands: [{x: [10, 100000], y: [43.2, 50], label: "spec: within -1 dB, 10 Hz - 100 kHz"}]
+    guides: [{x: [10, 100000], db: 43.2}]
+    markers: [{f: 1000, db: 44.42, label: "spec: 170 mV for 100 W / 8 ohm = 44.42 dB"}]
+    note: Shaded, the published response window (no lower than -1 dB from 10 Hz to 100 kHz); diamond, the gain implied by the 170 mV sensitivity.
+  - name: tone
+    title: Tone controls at the extremes, change from flat
+    ylabel: Change from flat (dB)
+    x: [10, 100000]
+    y: [-12, 12]
+    ystep: 3
+    curves:
+      - {case: bass_boost, minus: line, label: Bass boost, color: 0}
+      - {case: bass_cut, minus: line, label: Bass cut, color: 0, dash: true}
+      - {case: treble_boost, minus: line, label: Treble boost, color: 1}
+      - {case: treble_cut, minus: line, label: Treble cut, color: 1, dash: true}
+    markers:
+      - {f: 100, db: 7, label: "spec +7 dB at 100 Hz"}
+      - {f: 100, db: -7, label: "spec -7 dB at 100 Hz"}
+      - {f: 10000, db: 7, label: "spec +7 dB at 10 kHz"}
+      - {f: 10000, db: -7, label: "spec -7 dB at 10 kHz"}
+    note: Diamonds, the published +-7 dB at 100 Hz and 10 kHz. Treble reaches +-8.6 dB.
+  - name: phono
+    title: MM phono equalisation vs the RIAA curve
+    ylabel: Relative to 1 kHz (dB)
+    x: [20, 20000]
+    y: [-25, 25]
+    ystep: 5
+    curves:
+      - {case: phono_mm, minus: line, normalize: 1000, label: MM phono}
+      - {ideal: riaa, normalize: 1000, label: Ideal RIAA (3180/318/75 us)}
+    note: MM phono gain relative to the CD input, 0 dB at 1 kHz.
+  - name: riaa_error
+    title: Deviation from RIAA, 20 Hz - 20 kHz
+    ylabel: Error (dB)
+    x: [20, 20000]
+    y: [-0.6, 0.6]
+    ystep: 0.2
+    curves:
+      - {case: phono_mm, minus: line, minus_ideal: riaa, normalize: 1000, label: MM}
+      - {case: phono_mc, minus: line, minus_ideal: riaa, normalize: 1000, label: MC}
+    bands: [{x: [20, 20000], y: [-0.3, 0.3], label: "spec +-0.3 dB"}]
+    note: Shaded, the published RIAA accuracy (+-0.3 dB). Needs L401/L402 at 320 uH (the parts list's 320 mH gives +5 dB near 12.6 kHz).

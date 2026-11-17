@@ -171,7 +171,31 @@ def cmd_system(args: argparse.Namespace) -> int:
     (out / f"{name}_report.md").write_text(text + "\n")
     print(text.split("## DC")[0])
     print(op.splitlines()[-1])
+    if not args.case:  # every case ran: draw the charts
+        from . import plot
+
+        for path in plot.render(spec, out, name, text.split("## DC")[0]):
+            print("plot:", path)
     return 0 if ok else 2
+
+
+def cmd_plot(args: argparse.Namespace) -> int:
+    """Redraw a system's charts from its last run (response CSVs), without simulating."""
+    from . import plot
+    from . import system as sysmod
+
+    proj = project.current()
+    path = proj.resolve(args.file)
+    out = _out(args, "sys")
+    report = out / f"{path.stem}_report.md"
+    text = report.read_text().split("## DC")[0] if report.exists() else None
+    written = plot.render(sysmod.load(path), out, path.stem, text)
+    if not written:
+        print(f"{path}: no plots: section")
+        return 1
+    for w in written:
+        print("plot:", w)
+    return 0
 
 
 def build_ir(crop_name: str, variant: str | None = "project", proposed: bool = True):
@@ -361,6 +385,9 @@ def main(argv: list[str] | None = None) -> int:
     y.add_argument("--case", nargs="*", help="only these cases (default: all)")
     y.add_argument("--out", help="output folder (default: the project's out/sys)")
     y.add_argument("--build", action="store_true", help="first rebuild the boards' IRs from the scan")
+    pl = cmd("plot", cmd_plot, "redraw a system's frequency-response charts from its last run")
+    pl.add_argument("--file", required=True)
+    pl.add_argument("--out", help="folder of the run (default: the project's out/sys)")
     b = cmd("bom", cmd_bom, "IR -> values from the parts list -> IR + report")
     b.add_argument("--ir", required=True)
     b.add_argument("--variant", help="sales variant code from the parts list, e.g. 22B (default: project.yaml)")

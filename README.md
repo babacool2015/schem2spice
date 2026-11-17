@@ -73,6 +73,8 @@ meets 13 of 16 published specifications:
 | Bass / treble at 100 Hz / 10 kHz | ±7.17 / ±8.6 dB | ±7 dB |
 | Line input impedance | 76 kΩ | 20 kΩ |
 
+![Tone controls of the simulated PM-80 Mk II](projects/marantz-pm80mk2/docs/tone.svg)
+
 It also found a parts-list misprint: the phono input chokes are 320 µH, not the
 listed 320 mH, which a photo of a real board confirmed.
 

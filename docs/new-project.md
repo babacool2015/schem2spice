@@ -125,3 +125,10 @@ schem2spice system --file systems/chain.yaml --build
 
 `--build` rebuilds every board from the scan with proposed corrections included,
 into `out/sys/`; the report is `out/sys/chain_report.md`.
+
+Each case is an ngspice AC sweep (1 Hz to 1 MHz) written to
+`out/sys/<case>_response.csv`. A `plots:` section in the system file turns them
+into SVG charts and `out/sys/<system>_plots.html` (curves relative to another case,
+normalised at a frequency, against the ideal RIAA curve, with spec bands and
+markers; see the docstring of `src/schem2spice/plot.py`). Redraw without
+simulating: `schem2spice plot --file systems/chain.yaml`.

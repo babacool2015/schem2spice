@@ -3,7 +3,7 @@
 #   make test                    engine tests (no manual needed)
 #   make test-all                also the tests that read the reference project's scan
 #   make ingest PROJECT=...      PDF -> page images for a project
-#   make chain  PROJECT=...      build and simulate a project's board chain
+#   make chain  PROJECT=...      build and simulate a project's board chain, draw its charts
 # PROJECT defaults to the reference project, projects/marantz-pm80mk2.
 
 PYTHON  ?= python3
@@ -16,7 +16,7 @@ S2S := $(BIN)/schem2spice --project $(PROJECT)
 OS  := $(shell uname -s)
 
 .DEFAULT_GOAL := install
-.PHONY: install tools python venv ocr-models doctor test test-all ingest chain clean clean-venv help
+.PHONY: install tools python venv ocr-models doctor test test-all ingest chain plots clean clean-venv help
 
 help:
 	@sed -n '2,7p' Makefile | sed 's/^# //'
@@ -78,6 +78,10 @@ ingest: venv
 
 chain: venv
 	$(S2S) system --file $(CHAIN) --build
+
+# Redraw the chain's charts from its last run (no simulation).
+plots: venv
+	$(S2S) plot --file $(CHAIN)
 
 ## --- cleanup ----------------------------------------------------------------
 

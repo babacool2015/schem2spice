@@ -37,6 +37,14 @@ printed voltages, as the boards alone do.
 | MC input impedance | 100 Ω | 100 Ω |
 | Line input impedance | **76 kΩ** (117 kΩ at minimum volume) | 20 kΩ |
 
+Simulated responses (left channel; `make chain` regenerates them in `out/sys/`, copies
+here in `docs/`):
+
+![CD input gain](docs/line.svg)
+![Tone controls](docs/tone.svg)
+![Phono vs RIAA](docs/phono.svg)
+![Deviation from RIAA](docs/riaa_error.svg)
+
 Findings:
 - **L401/L402** (phono input chokes): the parts list prints 320 mH; the circuit only
   meets the RIAA and MC specs with 320 µH, and a photo of a real board shows small
