@@ -1,0 +1,115 @@
+# The signal chain, input jack to speaker terminal, both channels:
+#   P401 (input selector S401, phono stage) -> W005 -> P501 (buffer, active volume)
+#   -> W008 -> P601 (subsonic, tone, DIRECT) <-> W009 <-> P651 (balance) -> W004 -> P701
+#   (power amp) -> 8 ohm.
+# Each board keeps its own testbench (rails driven at their printed values, cuts,
+# params); the links replace the stand-in inputs and loads at the board edges.
+# Build the IRs with proposed corrections into out/sys/ first (see CLAUDE.md, "System").
+#
+# Specifications: PDF 3 (printed p. 1), "Technical specifications (DIN)".
+#   Rated output 100 W / 8 ohm = 28.28 V rms.
+#   Tuner/CD/Aux: 170 mV / 20 kohm, frequency response 10 Hz - 100 kHz (-1 dB),
+#     tone +-7 dB (100 Hz and 10 kHz).
+#   Moving magnet: 2.8 mV / 47 kohm, RIAA accuracy 0.3 dB. Moving coil: 220 uV / 100 ohm.
+boards:
+  p401x: {ir: out/sys/p401x_bom.json, tb: testbenches/p401x.yaml}
+  p501: {ir: out/sys/p501_bom.json, tb: testbenches/p501.yaml}
+  p601: {ir: out/sys/p601_bom.json, tb: testbenches/p601.yaml}
+  p651: {ir: out/sys/p651_bom.json, tb: testbenches/p651.yaml}
+  p701: {ir: out/sys/p701_bom.json, tb: testbenches/p701.yaml}
+
+links:
+  # W005, J408 -> J501 pin for pin (page 4); J501 lies outside the p501 crop, its pins
+  # 1 and 4 run to the R529-2 / R529-4 track ends.
+  - {a: "p401x:J408.1", b: "p501:R529-2.2", why: "W005 pin 1, left signal (S401-1 common)"}
+  - {a: "p401x:J408.4", b: "p501:R529-4.2", why: "W005 pin 4, right signal (S401-2 common)"}
+  # W008, J502 -> P601 J602 (page 4 "To P601 (J602)", page 6 "To P501 (J502)").
+  - {a: "p501:J502.1", b: "p601:J602.1", why: "W008 pin 1, left"}
+  - {a: "p501:J502.3", b: "p601:J602.3", why: "W008 pin 3, right"}
+  # W009, P601 J603 <-> P651 J651 pin for pin (page 6).
+  - {a: "p601:J603.1", b: "p651:J651.1", why: "W009 pin 1: R603 (4.7k) -> R651-1 dead-band end"}
+  - {a: "p601:J603.2", b: "p651:J651.2", why: "W009 pin 2: R604 (4.7k) -> R651-2 dead-band end"}
+  - {a: "p601:J603.3", b: "p651:J651.3", why: "W009 pin 3, ground (balance track centre)"}
+  - {a: "p601:J603.4", b: "p651:J651.4", why: "W009 pin 4, ground (balance track centre; J601's ground)"}
+  - {a: "p601:J603.5", b: "p651:J651.5", why: "W009 pin 5: R653 (R651-2 wiper) back to S601"}
+  - {a: "p601:J603.6", b: "p651:J651.6", why: "W009 pin 6: R652 (R651-1 wiper) back to S601"}
+  # W004, P601 J601 -> P701 J701 (page 6 "To P701 (J701)"); J701.1 / J701.4 feed R701 / R702.
+  - {a: "p601:J601.1", b: "p701:R701.1", why: "W004 pin 1, left"}
+  - {a: "p601:J601.4", b: "p701:R702.1", why: "W004 pin 4, right"}
+ground:
+  - {pin: "p401x:J408.3", why: "W005 pin 3, right-channel ground (J401 S2 shield side)"}
+  - {pin: "p501:R502.2", why: "Right-channel ground of P501 (from J501.3)"}
+  - {pin: "p601:J601.2", why: "W004 ground pins 2/3"}
+
+loads:
+  - {name: RSPKL, net: "p701:R781.M", value: 8, note: "8 ohm speaker, left (before LN01 and the relay, outside the crop)"}
+  - {name: RSPKR, net: "p701:R782.M", value: 8, note: "8 ohm speaker, right"}
+
+outputs:
+  L: "p701:R781.M"
+  R: "p701:R782.M"
+
+params:
+  p501: {R529-1: 1.0, R529-2: 1.0, R529-3: 1.0, R529-4: 1.0}  # volume: set per case
+  p651: {R651-1: 0, R651-2: 0}  # balance centre: both wipers at the dead-band end
+
+cases:
+  line:
+    note: CD input (S401 position 2), volume full, tone centre, DIRECT/SUBSONIC/MONO off.
+    params:
+      p401x: {S401: 2}
+    sources:
+      - {name: VINL, net: "p401x:J402.T1", dc: 0, ac: 1}
+      - {name: VINR, net: "p401x:J402.T2", dc: 0, ac: 1}
+    checks:
+      - {kind: gain, out: L, f: 1000, db: 44.42, tol_db: 1.5, spec: "Tuner/CD/Aux sensitivity 170 mV for 100 W / 8 ohm (28.28 V)"}
+      - {kind: gain, out: R, f: 1000, db: 44.42, tol_db: 1.5, spec: "same, right channel"}
+      - {kind: flat, out: L, f: [10, 100000], ref_f: 1000, min_db: -1.0, spec: "Frequency response 10 Hz - 100 kHz (-1 dB)"}
+      - {kind: flat, out: R, f: [10, 100000], ref_f: 1000, min_db: -1.0, spec: "same, right channel"}
+      - {kind: zin, source: VINL, f: 1000, ohms: 20000, tol: 0.15, spec: "Tuner/CD/Aux input impedance 20 kohm"}
+  # Tone: R625 BASS, R626 TREBLE (PCB legend, page 6); position 1 = boost, 0 = cut.
+  bass_boost:
+    note: As line, BASS (R625-1/-2) at full boost.
+    params: {p401x: {S401: 2}, p601: {R625-1: 1, R625-2: 1}}
+    sources: &cd
+      - {name: VINL, net: "p401x:J402.T1", dc: 0, ac: 1}
+      - {name: VINR, net: "p401x:J402.T2", dc: 0, ac: 1}
+    checks:
+      - {kind: relative, out: L, vs: line, f: 100, db: 7, tol_db: 1.5, spec: "Tone characteristic +-7 dB at 100 Hz"}
+  bass_cut:
+    note: As line, BASS at full cut.
+    params: {p401x: {S401: 2}, p601: {R625-1: 0, R625-2: 0}}
+    sources: *cd
+    checks:
+      - {kind: relative, out: L, vs: line, f: 100, db: -7, tol_db: 1.5, spec: "Tone characteristic +-7 dB at 100 Hz"}
+  treble_boost:
+    note: As line, TREBLE (R626-1/-2) at full boost.
+    params: {p401x: {S401: 2}, p601: {R626-1: 1, R626-2: 1}}
+    sources: *cd
+    checks:
+      - {kind: relative, out: L, vs: line, f: 10000, db: 7, tol_db: 1.5, spec: "Tone characteristic +-7 dB at 10 kHz"}
+  treble_cut:
+    note: As line, TREBLE at full cut.
+    params: {p401x: {S401: 2}, p601: {R626-1: 0, R626-2: 0}}
+    sources: *cd
+    checks:
+      - {kind: relative, out: L, vs: line, f: 10000, db: -7, tol_db: 1.5, spec: "Tone characteristic +-7 dB at 10 kHz"}
+  phono_mm:
+    note: PHONO (S401 position 1), S403 MM (drawn), volume full, tone centre.
+    params: {p401x: {S401: 1, S403: drawn}}
+    sources: &phono
+      - {name: VINL, net: "p401x:J401.T1", dc: 0, ac: 1}
+      - {name: VINR, net: "p401x:J401.T2", dc: 0, ac: 1}
+    checks:
+      - {kind: gain, out: L, f: 1000, db: 80.07, tol_db: 1.5, spec: "MM sensitivity 2.8 mV for 100 W / 8 ohm"}
+      - {kind: gain, out: R, f: 1000, db: 80.07, tol_db: 1.5, spec: "same, right channel"}
+      - {kind: riaa, out: L, vs: line, f: [20, 20000], tol_db: 0.3, spec: "Accuracy of frequency response to RIAA 0.3 dB (phono / line, 20 Hz - 20 kHz)"}
+      - {kind: riaa, out: R, vs: line, f: [20, 20000], tol_db: 0.3, spec: "same, right channel"}
+      - {kind: zin, source: VINL, f: 1000, ohms: 47000, tol: 0.15, spec: "MM input impedance 47 kohm"}
+  phono_mc:
+    note: PHONO, S403 MC (other position), volume full, tone centre.
+    params: {p401x: {S401: 1, S403: other}}
+    sources: *phono
+    checks:
+      - {kind: gain, out: L, f: 1000, db: 102.17, tol_db: 1.5, spec: "MC sensitivity 220 uV for 100 W / 8 ohm"}
+      - {kind: zin, source: VINL, f: 1000, ohms: 100, tol: 0.15, spec: "MC input impedance 100 ohm"}

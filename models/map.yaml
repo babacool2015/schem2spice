@@ -1,0 +1,160 @@
+# Part value (as written in the IR) -> SPICE model.
+# status: vendor | equivalent | approximate | behavioral
+# "approximate" = hand-built from typical datasheet figures, not a vendor model.
+
+2SK369-BL:
+  model: 2SK369-BL
+  lib: discretes.lib
+  status: approximate
+  why: >-
+    No vendor model on hand. Level-1 NJF from 2SK369 datasheet typicals for the BL
+    rank: Idss ~9 mA (6-12), |Yfs| ~40 mS -> VTO -0.45 V; Ciss 75 pF / Crss 15 pF.
+
+2SC2240:
+  model: 2SC2240
+  lib: discretes.lib
+  status: approximate
+  why: >-
+    Gummel-Poon from datasheet typicals: hFE ~400 (GR/BL ranks), fT 100 MHz,
+    Cob 3 pF, Vbe ~0.62 V at 1 mA. Rank not marked on schematic (parts list: GR, BL).
+
+2SA970:
+  model: 2SA970
+  lib: discretes.lib
+  status: approximate
+  why: Complement of 2SC2240, same derivation; Cob ~4 pF.
+
+2SC2705:
+  model: 2SC2705
+  lib: discretes.lib
+  status: approximate
+  why: Gummel-Poon from datasheet typicals, O/Y rank hFE ~150, fT 200 MHz, Cob 1.8 pF.
+
+2SA1145:
+  model: 2SA1145
+  lib: discretes.lib
+  status: approximate
+  why: Complement of 2SC2705, same derivation.
+
+1SS176:
+  model: 1SS176
+  lib: discretes.lib
+  status: equivalent
+  why: >-
+    Small-signal switching diode; uses 1N4148-class parameters. Parts list says
+    "1SS176, etc." so any equivalent switching diode was fitted.
+
+NJM2068:
+  model: NJM2068
+  lib: opamps.lib
+  status: behavioral
+  why: >-
+    No vendor model on hand. Single-pole macromodel from NJM2068 datasheet typicals
+    (GBW 27 MHz, Avol 110 dB, Ib 200 nA, swing ~1.5 V inside the rails, 2.5 mA per
+    section); see models/opamps.lib. Offset voltage not modelled. Output limiting is
+    behavioral (no current path between the supply pins; load current comes from
+    ground), so rail sag from load current is not modelled.
+
+# --- P701 power amp ---
+2SC3067:
+  model: 2SC3067
+  lib: discretes.lib
+  status: approximate
+  why: Input pair (one ref, two halves Q701-1/-2). No datasheet on hand; 2SC2240 parameters (small-signal low-noise NPN).
+
+2SC4883:
+  model: 2SC4883
+  lib: discretes.lib
+  status: approximate
+  why: Gummel-Poon from typicals (150 V, 2 A, hFE ~120, fT ~120 MHz, Cob ~25 pF).
+
+2SA1859:
+  model: 2SA1859
+  lib: discretes.lib
+  status: approximate
+  why: Complement of 2SC4883.
+
+2SA1859-O:
+  model: 2SA1859
+  lib: discretes.lib
+  status: approximate
+  why: O rank of 2SA1859 (parts list gives one rank for Q730); same model.
+
+2SC4467:
+  model: 2SC4467
+  lib: discretes.lib
+  status: approximate
+  why: Output NPN, Gummel-Poon from typicals (8 A, 80 W, hFE ~100, fT ~20 MHz).
+
+2SA1694:
+  model: 2SA1694
+  lib: discretes.lib
+  status: approximate
+  why: Complement of 2SC4467.
+
+HSS81TD:
+  model: HSS81TD
+  lib: discretes.lib
+  status: equivalent
+  why: Small-signal switching diode, 1N4148-class parameters.
+
+LT3D8B:
+  model: LT3D8B
+  lib: discretes.lib
+  status: approximate
+  why: Red LED used as a voltage reference in the P701 current sources; Vf ~1.7-1.9 V.
+
+RD5.6JB2:
+  model: RD5.6JB2
+  lib: discretes.lib
+  status: approximate
+  why: 5.6 V zener from the parts list (the schematic prints 3.6V beside D727-D730).
+
+2SD1508:
+  model: 2SD1508
+  lib: discretes.lib
+  status: approximate
+  why: Darlington subcircuit (2SC2240-class driver, 2SC4883-class output, 3k B-E resistor).
+
+PC-817:
+  model: PC-817
+  lib: discretes.lib
+  status: behavioral
+  why: Photocoupler subcircuit, LED plus a current source of CTR 100 % x LED current.
+
+# --- P851 power supply ---
+S5688G:
+  model: S5688G
+  lib: discretes.lib
+  status: approximate
+  why: 1 A rectifier diode, generic parameters.
+
+RD20JB2:
+  model: RD20JB2
+  lib: discretes.lib
+  status: approximate
+  why: 20 V zener (reference of the +-18 V regulators).
+
+RD7.5JB2:
+  model: RD7.5JB2
+  lib: discretes.lib
+  status: approximate
+  why: 7.5 V zener (two in series clamp the 15.3 V line).
+
+2SD1417:
+  model: 2SD1417
+  lib: discretes.lib
+  status: approximate
+  why: NPN Darlington subcircuit (2SC2240-class driver, 2SC4883-class output).
+
+2SB1022:
+  model: 2SB1022
+  lib: discretes.lib
+  status: approximate
+  why: PNP Darlington subcircuit (2SA970-class driver, 2SA1859-class output).
+
+NJM7824:
+  model: NJM7824
+  lib: discretes.lib
+  status: behavioral
+  why: 24 V regulator (schematic NJM78M24A, parts list NJM7824FA); ideal 24 V with 2 V dropout and 5 mA quiescent.

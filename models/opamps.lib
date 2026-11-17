@@ -1,0 +1,29 @@
+* Op-amp macromodels for schem2spice. Behavioral, NOT vendor models: see models/map.yaml.
+
+* NJM2068 (New JRC dual low-noise op-amp), one section.
+* Datasheet typicals: GBW 27 MHz, open-loop gain 110 dB, input bias current 200 nA
+* (bipolar NPN input), output swing about +/-13.5 V on +/-15 V, supply current
+* 5 mA per package (2.5 mA per section). Offset voltage (0.3 mV typ) is not modelled.
+* Single-pole: gm stage into R1||C1, gain = gm*R1 = 3.16e5 (110 dB),
+* pole set so that GBW = gm / (2 pi C1) = 27 MHz. Output: behavioral source limited to
+* 1.5 V inside the rails, Rout 50 ohm. The gain node is bounded by clamps to fixed
+* +/-25 V references, NOT to the supply pins: rail-referenced clamp diodes form a
+* path between V+ and V- and gave a false "collapsed rails" operating point when the
+* supply is fed through a resistor (P601). Output current is drawn from ground, not
+* the rails (supply current = IQ only). Pins: non-inverting, inverting, V+, V-, output.
+.subckt NJM2068 inp inn vcc vee out
+IBP inp 0 200n
+IBN inn 0 200n
+RIN inp inn 1Meg
+G1 0 n1 inp inn 1m
+R1 n1 0 316Meg
+C1 n1 0 5.9p
+VCH ch 0 25
+VCL cl 0 -25
+DH n1 ch DCLAMP
+DL cl n1 DCLAMP
+B1 n2 0 V = max(min(V(n1), V(vcc) - 1.5), V(vee) + 1.5)
+ROUT n2 out 50
+IQ vcc vee 2.5m
+.model DCLAMP D(IS=1f N=1)
+.ends NJM2068

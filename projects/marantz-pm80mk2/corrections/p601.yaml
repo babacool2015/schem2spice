@@ -1,0 +1,66 @@
+# Corrections for crop p601 (pages/page-06.png, P601 tone amp, both channels).
+# Same rules as corrections/p401l.yaml: components match by type + page position
+# (within 40 px of `at`), annotations by label position; `set_voltage` fixes a
+# misread value. status: proposed (read off the scan by Claude, unchecked) | confirmed.
+# page: PDF page (tools' numbering). PDF 6 = printed pp. 7/8; P601 is on printed p. 7.
+components:
+  # --- refs OCR did not read ---
+  - {page: 6, at: [2872, 2178], type: resistor, ref: R601, value: 1M, status: proposed,
+     why: 'Label "R601 1M" left of the symbol, beside S601.'}
+  - {page: 6, at: [3301, 2176], type: resistor, ref: R602, value: 1M, status: proposed,
+     why: 'Label "R602 1M" (vertical) right of the symbol.'}
+  - {page: 6, at: [5134, 1982], type: capacitor_polarized, ref: C610, value: 10u, status: proposed,
+     why: 'Label "C610 10/50V" above the symbol (twin of C609).'}
+  - {page: 6, at: [5261, 2092], type: resistor, ref: R612, value: 3.3k, status: proposed,
+     why: 'Label "R612 3.3k" left of the symbol (twin of R611).'}
+  - {page: 6, at: [5361, 1466], type: capacitor_polarized, ref: C625, value: 220u, status: proposed,
+     why: 'Label "C625 220/25V" (vertical) right of the symbol, on the + rail.'}
+  - {page: 6, at: [5361, 1823], type: capacitor_polarized, ref: C626, value: 220u, status: proposed,
+     why: 'Label "C626 220/25V" (vertical) right of the symbol, on the - rail.'}
+  - {page: 6, at: [6361, 1224], type: capacitor_polarized, ref: C615, value: 10u, status: proposed,
+     why: 'Label "C615 10/50V" above the symbol, at the Q602-1 output (twin of C616).'}
+  - {page: 6, at: [6490, 1338], type: resistor, ref: R615, value: 100k, status: proposed,
+     why: 'Label "R615 100k" left of the symbol (twin of R616).'}
+  - {page: 6, at: [6883, 1297], type: capacitor, ref: C621, value: 0.01u, status: proposed,
+     why: 'Label "C621 0.01" above the symbol (twin of C622).'}
+  - {page: 6, at: [6875, 2048], type: capacitor, ref: C622, value: 0.01u, status: proposed,
+     why: 'Label "C622 0.01" below the symbol; OCR gave it "1.5k" (R624 value).'}
+  - {page: 6, at: [6988, 2371], type: resistor, ref: R622, value: 1.5k, status: proposed,
+     why: 'Label "R622 1.5k" left of the symbol (twin of R621).'}
+  - {page: 6, at: [7302, 692], type: resistor, ref: R629, status: proposed,
+     why: 'Label "R629 1/4W 100" above the symbol (the + rail feed of Q603/Q604). Value from the parts list (see note on R627-R630).'}
+  # --- op-amp sections (all NJM2068DD); labels above or below each triangle ---
+  - {page: 6, at: [4818, 1377], type: opamp, ref: Q601-1, value: NJM2068, status: proposed, why: 'Label "Q601-1 NJM2068DD" above; + drawn on top.'}
+  - {page: 6, at: [4820, 1984], type: opamp, ref: Q601-2, value: NJM2068, status: proposed, why: 'Label "Q601-2 NJM2068DD" below.'}
+  - {page: 6, at: [6037, 1233], type: opamp, ref: Q602-1, value: NJM2068, status: proposed, why: 'Label "Q602-1 NJM2068DD" above; + drawn on top.'}
+  - {page: 6, at: [6040, 2120], type: opamp, ref: Q602-2, value: NJM2068, status: proposed, why: 'Label "Q602-2 NJM2068DD" below.'}
+  - {page: 6, at: [7503, 901], type: opamp, ref: Q603-1, value: NJM2068, status: proposed, why: 'Label "Q603-1 NJM2068DD" above-right; + drawn on top.'}
+  - {page: 6, at: [7504, 1364], type: opamp, ref: Q604-1, value: NJM2068, status: proposed, why: 'Label "Q604-1 NJM2068DD" below-right; + drawn on top.'}
+  - {page: 6, at: [7504, 1972], type: opamp, ref: Q604-2, value: NJM2068, status: proposed, why: 'Label "Q604-2 NJM2068DD" below-right; its supply circle on top is V- (-15.8 V).'}
+  - {page: 6, at: [7504, 2401], type: opamp, ref: Q603-2, value: NJM2068, status: proposed, why: 'Label "Q603-2 NJM2068DD" below-right.'}
+  # --- S601 (DIRECT / SUBSONIC / MONO push switches): poles numbered by position.
+  #     Function per pole is inferred from the wiring, not printed: 1-4 near J602/J601
+  #     (DIRECT: input/output routing), 5-6 with R601/R602 1M (MONO), 7-8 with R603/R604 (SUBSONIC). ---
+  - {page: 6, at: [2542, 1858], type: switch_spdt, ref: S601-1, status: proposed, why: Upper-left block near J602, left pole.}
+  - {page: 6, at: [2626, 1857], type: switch_spdt, ref: S601-2, status: proposed, why: Upper-left block near J602, right pole.}
+  - {page: 6, at: [2544, 2251], type: switch_spdt, ref: S601-3, status: proposed, why: Lower-left block near J601, left pole.}
+  - {page: 6, at: [2627, 2250], type: switch_spdt, ref: S601-4, status: proposed, why: Lower-left block near J601, right pole.}
+  - {page: 6, at: [3040, 2105], type: switch_spdt, ref: S601-5, status: proposed, why: Middle block (with R601/R602), left pole.}
+  - {page: 6, at: [3125, 2104], type: switch_spdt, ref: S601-6, status: proposed, why: Middle block (with R601/R602), right pole.}
+  - {page: 6, at: [3542, 2101], type: switch_spdt, ref: S601-7, status: proposed, why: Right block (with R603/R604), left pole.}
+  - {page: 6, at: [3626, 2100], type: switch_spdt, ref: S601-8, status: proposed, why: Right block (with R603/R604), right pole.}
+  # --- values OCR missed or garbled (common parts: value only on the schematic) ---
+  - {page: 6, at: [6163, 1410], type: resistor, value: 3.3k, status: proposed, why: 'R613: "3.3k" printed under the ref.'}
+  - {page: 6, at: [6164, 1947], type: resistor, value: 3.3k, status: proposed, why: 'R614: "3.3k" printed under the ref.'}
+  - {page: 6, at: [6986, 942], type: resistor, value: 1.5k, status: proposed, why: 'R621: "1.5k" printed under the ref.'}
+  - {page: 6, at: [6988, 1942], type: resistor, value: 1.5k, status: proposed, why: 'R624: "1.5k" printed under the ref.'}
+  - {page: 6, at: [7198, 2370], type: resistor, value: 68k, status: proposed, why: 'R618: "68k" printed under the ref; OCR read "3".'}
+annotations:
+  - {page: 6, at: [7601, 1687], voltage: -15.8, net_pin: Q602-2.V-, status: proposed,
+     why: '"-15.8V" above Q604-2 marks its V- supply circle (the -15.8 V rail shared with Q602-2/Q603-2); nearest-wire put it on the ground bus.'}
+  - {page: 6, at: [5967, 1087], voltage: 15.8, net_pin: Q603-1.V+, status: proposed,
+     why: '"15.8V" above Q602-1 marks its V+ supply circle, wired to the +15.9 V rail; nearest-wire put it on the R625-1 wiper.'}
+  - {page: 6, at: [7248, 1204], voltage: 0.01, net_pin: Q604-1.+, status: proposed,
+     why: '"0.01V" (vertical) beside R619/C623 marks the Q604-1 + input; nearest-wire put it on the ground bus.'}
+  - {page: 6, at: [5772, 2107], voltage: 10.03, set_voltage: 0.03, status: proposed,
+     why: 'Printed "0.03V"; the op-amp pin number "1" printed next to it was read into the value.'}

@@ -1,0 +1,61 @@
+# Corrections for crop p401 (pages/page-04.png, P401 phono, both channels).
+# Same rules as corrections/p401l.yaml, whose items (left channel) are included.
+# status: proposed (read off the scan by Claude, unchecked) | confirmed.
+# page: PDF page (tools' numbering). PDF 4 = printed pp. 3/4; P401 is on printed p. 3.
+include: [p401l]
+components:
+  # --- left channel: read in crop p401l, missed in this wider crop ---
+  - {page: 4, at: [3630, 1063], type: diode, ref: DM31, status: confirmed,
+     why: 'Label "DM31 *" right of the symbol at the top of PM31 (read in crop p401l).'}
+  - {page: 4, at: [3210, 1752], type: resistor, value: "68", status: confirmed,
+     why: 'RM33: "68" printed under the ref; this crop read "89" (crop p401l read 68). Common part: value only on the schematic.'}
+  # --- right channel: refs OCR did not read ---
+  - {page: 4, at: [3181, 3291], type: njfet, ref: QM42, value: 2SK369, status: confirmed,
+     why: 'Label "QM42 2SK369 BL" above-left of the symbol (twin of QM32).'}
+  - {page: 4, at: [3570, 3200], type: pnp, ref: QM44, value: 2SA970, status: confirmed,
+     why: 'Label "QM44 2SA970" above the symbol (twin of QM34).'}
+  - {page: 4, at: [3815, 3199], type: pnp, ref: QM45, value: 2SA970, status: confirmed,
+     why: 'Label "QM45 2SA970" above-right of the symbol (twin of QM35).'}
+  - {page: 4, at: [2241, 3318], type: capacitor, ref: C402, value: 220p, status: confirmed,
+     why: 'Label "C402 220p" (vertical) above. As for C401, the parts list says 330p for 22B and wins.'}
+  - {page: 4, at: [2445, 4204], type: resistor, ref: R410, value: 82k, status: confirmed,
+     why: 'Label "R410 82k" above the symbol, above C408 (twin of R409).'}
+  - {page: 4, at: [2673, 4289], type: capacitor, ref: C410, value: 0.01u, status: confirmed,
+     why: 'Label "C410 0.01" right of the symbol (twin of C409).'}
+  - {page: 4, at: [2532, 4343], type: resistor, ref: R418, value: 1M, status: confirmed,
+     why: 'Label "R418 1M" left of the symbol (twin of R417).'}
+  - {page: 4, at: [2532, 4571], type: resistor, ref: R416, value: "12", status: confirmed,
+     why: 'Label "R416 12" right of the symbol (twin of R415); OCR read "8416".'}
+  - {page: 4, at: [4089, 3372], type: resistor, ref: R420, value: "33", status: confirmed,
+     why: 'Label "R420 33" (vertical) left of the symbol, at the Q401-2 inputs (twin of R419).'}
+  - {page: 4, at: [4507, 3339], type: opamp, ref: Q401-2, value: NJM2068DD, status: confirmed,
+     why: 'Label "Q401-2 NJM2068DD" above the triangle; its V- circle carries -17.2 V.'}
+  # --- right channel: wrong refs (same OCR mix-up as R407/R409 on the left) ---
+  - {page: 4, at: [2445, 4090], type: resistor, ref: R408, value: 2.2M, status: confirmed,
+     why: 'Label above reads "R408 2.2M"; OCR gave it the "R410" label of the resistor below.'}
+  - {page: 4, at: [2303, 4573], type: resistor, ref: R414, value: "150", status: confirmed,
+     why: 'Label "R414 150" right of the symbol; OCR gave it the "R416" label of its neighbour.'}
+  - {page: 4, at: [3268, 3659], type: resistor, ref: RM43, value: "68", status: confirmed,
+     why: 'Label "RM43 68" right of the symbol (twin of RM33); OCR read "RM63".'}
+  - {page: 4, at: [2673, 4371], type: capacitor, ref: C412, value: 1000p, status: confirmed,
+     why: 'Label "C412 1000p" below the symbol (twin of C411); OCR read "C212".'}
+  # --- right channel: values OCR missed (common parts) ---
+  - {page: 4, at: [3835, 3601], type: resistor, value: 1k, status: confirmed,
+     why: 'RM45: "1K" printed under the ref (twin of RM35).'}
+  - {page: 4, at: [3693, 3373], type: resistor, value: 33k, status: confirmed,
+     why: 'RM46: "33K" printed under the ref (twin of RM36).'}
+  # --- L401/L402: the parts list's "320mH" is a misprint for 320 uH (system chain) ---
+  - {page: 4, at: [1883, 1330], type: inductor, ref: L401, value: 320u, status: confirmed,
+     why: 'Input RF choke; no value on the schematic. Confirmed by the user (2026-11-16): a board photo shows a small radial drum-core choke (~6-8 mm), far too small for 320 mH.',
+     over_list: 'Parts list "Choke Coil, 320mH [/22B/22G]". 320 mH in series with the phono input is 2 kohm at 1 kHz and resonates with C401 near 15 kHz: the chain (systems/chain.yaml) then gives RIAA +5.1 dB at 12.6 kHz, MC gain 76.1 dB and MC input 2.0 kohm. With 320 uH: RIAA within 0.13 dB, MC 102.17 dB (spec 220 uV -> 102.17 dB), MC input 100 ohm, as the specs on PDF 3 state.'}
+  - {page: 4, at: [1897, 1657], type: inductor, ref: L402, value: 320u, status: confirmed,
+     why: 'Right-channel twin of L401.',
+     over_list: 'As L401 (parts list "320mH", a misprint for 320 uH).'}
+annotations:
+  # Mirror images of the three left-channel label moves still proposed in p401l.yaml.
+  - {page: 4, at: [3394, 3830], voltage: -17.2, net_pin: JM41.6, status: confirmed,
+     why: '"-17.2V" above the -17.2 V rail at the bottom of PM41; nearest-wire put it on the module output.'}
+  - {page: 4, at: [3094, 3318], voltage: 0.0, net_pin: QM42.G, status: confirmed,
+     why: '"0V" left of QM42 marks its gate (J407.2, the signal input).'}
+  - {page: 4, at: [3409, 3145], voltage: 16.7, net_pin: RM42.2, status: confirmed,
+     why: '"16.7V" above QM41 marks the RM42 / QM41 drain / QM45 emitter line, not the QM41 gate.'}

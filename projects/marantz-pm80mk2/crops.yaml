@@ -1,0 +1,81 @@
+# Named crops for `cli extract --crop NAME`. rect = [x0, y0, x1, y1] on the upright
+# PDF page image (pages/page-NN.png).
+pm11:
+  page: 4
+  rect: [6950, 1300, 8200, 2450]
+  note: PM11 amp module (YK188J195-0) inside its dashed outline.
+p501l:
+  page: 4
+  rect: [6250, 650, 9300, 3200]
+  note: >-
+    PM11 plus the P501 left-channel parts of the golden IR. Reaches below and right of
+    the golden scope because the board wires from J504 dip under the module and the
+    C507/R523 return reaches ground via C512 / J502 pin 2.
+p401l:
+  page: 4
+  rect: [900, 600, 5800, 2900]
+  note: >-
+    P401 phono, left channel: J401 input, L401/L402, PM31 module (same design as
+    PM11), RIAA network (R407-R417, C405-C411), S403 MM/MC, NJM2068 Q401-1, J408/J409.
+p401:
+  page: 4
+  rect: [900, 600, 5800, 4750]
+  note: >-
+    P401 phono, both channels: everything of p401l plus the right channel (L402,
+    R404/C404, PM41 via J407/JM41, R402-R418 RIAA network, Q401-2, J410). The right
+    channel's input path runs through the left channel's area (J401, L402, S403), so
+    the channels are extracted and simulated together. Also catches the CD/TUNER/AUX
+    jacks J402-J404 (input selector, cut in the testbench).
+p601:
+  page: 6
+  rect: [1750, 550, 8100, 3450]
+  scale: 1.26  # drawn 1.26x page 4 (template-scale sweep peak; strokes 4.65 vs 3.8 px)
+  note: >-
+    P601 tone amp (YK188J192-0, part 1/2), both channels: J602 in (from P501 J502),
+    S601 DIRECT/SUBSONIC/MONO, Q601 (NJM2068), BASS/TREBLE R625/R626 (ganged), Q602,
+    Q603/Q604, J601 out (to P701 J701), J603-J605 down to the bottom edge.
+p501:
+  page: 4
+  rect: [6250, 650, 9300, 4600]
+  note: >-
+    P501 volume board, both channels: everything of p501l plus PM21 (JM21/J505),
+    R504-R528 right-channel parts, Q502/Q504, R529-3/R529-4, C510/C511 down to the
+    board's bottom wires. Left edge as p501l: at x=6150 the J501 box outline is cut
+    along its edge and shorts the jack pins.
+p701:
+  page: 7
+  rect: [1500, 650, 7350, 5750]
+  n_refs: true  # real QN01/RN01/DN01 refs: keep the N (page 4 reads module M as N)
+  scale: 1.26  # drawn like page 6 (template-scale sweep peak 1.26; strokes 8.2 vs 6.4 px)
+  note: >-
+    P701 power amp (YK188J191-0), both channels (left on top, right below): J701 in
+    (from P601 J601), Q701/Q702 dual input pairs, VAS, Q719/Q720 bias, drivers and
+    output pairs, QN01/QN02 DC servo stubs. Stops before LN01/LN02 and the speaker
+    relays / TA7317P protection (drawn again on page 8). The rails come in from
+    J704/J705 (P801/P851) at the bottom right, outside the crop.
+p851:
+  page: 10
+  rect: [880, 950, 4650, 3700]
+  scale: 1.26  # template-scale sweep peak (as pages 6 and 7)
+  note: >-
+    P851 power supply (YK188J193-0), the copy on PDF 10 (PDF 9 has the same board).
+    J851/J852 AC in from the transformer, bridges D851-D858 / D865-D872, raw
+    +-56.7/-57.0 V out to P701 (J855 -> J704), +-18 V regulators (Q851-Q854, D863/D864),
+    Q855 NJM78M24A 24 V and 15.3 V (D877/D878), Q856/Q857 power-off detect, J853/J854.
+p401x:
+  page: 4
+  rect: [900, 600, 5800, 5310]
+  note: >-
+    p401 plus the input selector's playback poles S401-1 (L) / S401-2 (R) and the
+    line jacks J402-J404 (CD, TUNER, AUX, DCC/TAPE play) with their terminations, for
+    the system chain (systems/). Bottom edge at y=5310, the one gap between
+    horizontal wires below S401 (5295-5322); S401-3/-4 and S402 (record out) stay below.
+p651:
+  page: 6
+  rect: [3220, 3530, 3900, 4300]
+  scale: 1.26
+  note: >-
+    P651 balance board (YK188J197-0): J651 (W009 cable from P601 J603, pins straight
+    through), R651-1/-2 balance pot (ganged; the box at one end of each track is the
+    conductive dead band, traced as wire), R652/R653 1.5k to J651.6/.5. Top edge just
+    above J651, below the W009 shield dots.

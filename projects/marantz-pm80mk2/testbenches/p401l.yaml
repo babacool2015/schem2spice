@@ -1,0 +1,27 @@
+# Testbench for P401 left channel (crop p401l, variant 22B). Nets are given as pins.
+# DC operating point against the printed voltages of PM31 and Q401-1.
+ground: R405.2           # input termination to signal ground (J401 shield S1)
+sources:
+  - {name: VP, net: JM31.3, dc: 17.2, note: "+17.2 V rail after R425 (printed 17.2 V)"}
+  - {name: VN, net: JM31.6, dc: -17.2, note: "-17.2 V rail after R426 (printed -17.2 V on the rail)"}
+  - {name: VIN, net: J401.T1, dc: 0, ac: 1, note: "PHONO L input (J401 tip 1)"}
+bind:
+  - pin: Q401-1.V-
+    to: JM31.6
+    why: >-
+      Q401 is a dual; its V- is drawn on section Q401-2 (right channel, outside the
+      crop) at -17.2 V, the same rail as JM31.6.
+cut:
+  - refs: [L402, R404, C404, S403-1, S403-3]
+    why: Right-channel input parts inside the crop (J401 tip 2 path to PM41); not part of the left channel.
+  - refs: [C421, C422]
+    why: >-
+      Chassis RF decoupling from the J401 shields to the chassis terminal; that node is
+      only capacitors in this crop (no DC path) and has no DC role.
+params:
+  S403: drawn    # drawn position = MM: the 100 ohm MC load R403/C403 is disconnected
+analyses:
+  - op
+tolerance:
+  rel: 0.10
+  abs: 0.05

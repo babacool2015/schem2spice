@@ -1,0 +1,14 @@
+# Python
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+
+# Copyrighted inputs and generated output, per project
+projects/*/data/
+projects/*/pages/
+projects/*/out/
+
+# Local
+.DS_Store
+README_RAL.txt

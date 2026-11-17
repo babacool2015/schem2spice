@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "source": "pages/page-04.png",
+    "pdf_page": 4,
+    "printed_page": 4,
+    "board": "P501",
+    "module": "PM11",
+    "channel": "L",
+    "author": "hand-built golden IR",
+    "scope": "PM11 amp module (YK188J195-0) plus the P501 left-channel parts that close its loop: input divider/volume, output buffer Q501/Q503, DC and AC feedback.",
+    "cuts": [
+      "Supplies cut at the P501 15.1 V / -15.2 V rails (after R525/R526, which are shared with PM21 and not in scope); driven by sources in the testbench.",
+      "Input cut at J501 pin 1 (W005 from P401); driven by a source.",
+      "Output cut at J502 pin 1 (W008 to P601/J602); terminated in the testbench."
+    ]
+  },
+  "components": [
+    {"ref": "RM11", "type": "resistor", "value": "100", "tolerance": "1%", "pins": {"1": "vp", "2": "d1"}, "bbox": [7330, 1410, 40, 90], "confidence": 1.0},
+    {"ref": "RM12", "type": "resistor", "value": "100", "tolerance": "1%", "pins": {"1": "vp", "2": "d2"}, "bbox": [7440, 1410, 40, 90], "confidence": 1.0},
+    {"ref": "RM13", "type": "resistor", "value": "68", "tolerance": "5%", "pins": {"1": "e13", "2": "vn"}, "bbox": [7435, 2100, 40, 90], "confidence": 1.0},
+    {"ref": "RM14", "type": "resistor", "value": "1k", "tolerance": "5%", "pins": {"1": "dm15k", "2": "vn"}, "bbox": [7660, 2145, 40, 90], "confidence": 1.0},
+    {"ref": "RM15", "type": "resistor", "value": "1k", "tolerance": "5%", "pins": {"1": "e16", "2": "vn"}, "bbox": [7945, 2040, 40, 90], "confidence": 1.0},
+    {"ref": "RM16", "type": "resistor", "value": "33k", "tolerance": "5%", "pins": {"1": "bias14", "2": "b13"}, "bbox": [7800, 1800, 40, 90], "confidence": 1.0},
+
+    {"ref": "DM11", "type": "diode", "value": "1SS176", "pins": {"A": "vp", "K": "dm11k"}, "bbox": [7800, 1420, 45, 60], "confidence": 1.0},
+    {"ref": "DM12", "type": "diode", "value": "1SS176", "pins": {"A": "dm11k", "K": "bias14"}, "bbox": [7800, 1560, 45, 60], "confidence": 1.0},
+    {"ref": "DM13", "type": "diode", "value": "1SS176", "pins": {"A": "b13", "K": "dm13k"}, "bbox": [7805, 2040, 45, 60], "confidence": 1.0},
+    {"ref": "DM14", "type": "diode", "value": "1SS176", "pins": {"A": "dm13k", "K": "vn"}, "bbox": [7805, 2165, 45, 60], "confidence": 1.0},
+    {"ref": "DM15", "type": "diode", "value": "1SS176", "pins": {"A": "c14", "K": "dm15k"}, "bbox": [7660, 2045, 45, 60], "confidence": 1.0},
+
+    {"ref": "QM11", "type": "njfet", "value": "2SK369-BL", "pins": {"D": "d1", "G": "inp", "S": "tail"}, "bbox": [7265, 1660, 100, 100], "confidence": 1.0},
+    {"ref": "QM12", "type": "njfet", "value": "2SK369-BL", "pins": {"D": "d2", "G": "inn", "S": "tail"}, "bbox": [7435, 1660, 100, 100], "confidence": 1.0},
+    {"ref": "QM13", "type": "npn", "value": "2SC2240", "pins": {"C": "tail", "B": "b13", "E": "e13"}, "bbox": [7425, 1945, 100, 100], "confidence": 1.0},
+    {"ref": "QM14", "type": "pnp", "value": "2SA970", "pins": {"C": "c14", "B": "bias14", "E": "d1"}, "bbox": [7650, 1628, 100, 100], "confidence": 1.0},
+    {"ref": "QM15", "type": "pnp", "value": "2SA970", "pins": {"C": "outh", "B": "bias14", "E": "d2"}, "bbox": [7895, 1628, 100, 100], "confidence": 1.0},
+    {"ref": "QM16", "type": "npn", "value": "2SC2240", "pins": {"C": "outl", "B": "c14", "E": "e16"}, "bbox": [7895, 1880, 100, 100], "confidence": 1.0},
+
+    {"ref": "R529-2", "type": "potentiometer", "value": "250k", "pins": {"1": "gnd", "2": "lin", "W": "vw"}, "bbox": [6355, 1665, 50, 80], "confidence": 0.9, "note": "Volume, ganged with R529-1. Pins named by position like every swappable part: pin 1 = top end (grounded, via the R505 node), pin 2 = bottom end (fed from J501.1)."},
+    {"ref": "R529-1", "type": "potentiometer", "value": "2k", "pins": {"1": "fbx", "2": "r505t", "W": "fbx"}, "bbox": [6355, 1210, 50, 80], "confidence": 0.9, "note": "Rheostat in the AC feedback leg, wiper tied to pin 1."},
+    {"ref": "R501", "type": "resistor", "value": "220k", "tolerance": "5%", "pins": {"1": "vw", "2": "gnd"}, "bbox": [6475, 1755, 40, 90], "confidence": 1.0},
+    {"ref": "R503", "type": "resistor", "value": "220", "tolerance": "5%", "pins": {"1": "vw", "2": "inp"}, "bbox": [6540, 1690, 90, 40], "confidence": 1.0},
+    {"ref": "R505", "type": "resistor", "value": "220", "tolerance": "5%", "pins": {"1": "r505t", "2": "gnd"}, "bbox": [6360, 1355, 40, 90], "confidence": 1.0},
+    {"ref": "R507", "type": "resistor", "value": "2.2k", "tolerance": "5%", "pins": {"1": "fbx", "2": "out"}, "bbox": [7040, 975, 90, 40], "confidence": 1.0},
+    {"ref": "R509", "type": "resistor", "value": "3.3M", "tolerance": "5%", "pins": {"1": "inn", "2": "r509b"}, "bbox": [7270, 1060, 90, 40], "confidence": 1.0},
+    {"ref": "R511", "type": "resistor", "value": "3.3M", "tolerance": "5%", "pins": {"1": "r509b", "2": "r511b"}, "bbox": [7410, 1060, 90, 40], "confidence": 1.0},
+    {"ref": "R513", "type": "resistor", "value": "3.3M", "tolerance": "5%", "pins": {"1": "r511b", "2": "oe"}, "bbox": [7545, 1060, 90, 40], "confidence": 1.0},
+    {"ref": "R515", "type": "resistor", "value": "150", "tolerance": "5%", "pins": {"1": "outh", "2": "r515b"}, "bbox": [8330, 2090, 90, 40], "confidence": 1.0},
+    {"ref": "R517", "type": "resistor", "value": "100", "tolerance": "5%", "pins": {"1": "d503k", "2": "outl"}, "bbox": [8295, 1810, 40, 90], "confidence": 1.0},
+    {"ref": "R519", "type": "resistor", "value": "10", "tolerance": "5%", "pins": {"1": "q501e", "2": "oe"}, "bbox": [8435, 1610, 40, 90], "confidence": 1.0},
+    {"ref": "R521", "type": "resistor", "value": "10", "tolerance": "5%", "pins": {"1": "oe", "2": "q503e"}, "bbox": [8435, 1780, 40, 90], "confidence": 1.0},
+    {"ref": "R523", "type": "resistor", "value": "100k", "tolerance": "5%", "pins": {"1": "out", "2": "gnd"}, "bbox": [8670, 1915, 40, 90], "confidence": 0.7, "note": "Lower end runs down to the C511/C512 area; assumed to be ground. Not on the DC path of any printed voltage."},
+    {"ref": "R527", "type": "resistor", "value": "1.5k", "tolerance": "5%", "pins": {"1": "out", "2": "lout"}, "bbox": [8730, 1715, 90, 40], "confidence": 1.0},
+
+    {"ref": "C501", "type": "capacitor", "value": "100p", "tolerance": "5%", "pins": {"1": "inp", "2": "gnd"}, "bbox": [6645, 1765, 50, 60], "confidence": 1.0},
+    {"ref": "C503", "type": "capacitor", "value": "47p", "tolerance": "5%", "pins": {"1": "fbx", "2": "out"}, "bbox": [7060, 890, 50, 50], "confidence": 1.0},
+    {"ref": "C505", "type": "capacitor", "value": "0.1u", "tolerance": "5%", "pins": {"1": "fbx", "2": "inn"}, "bbox": [6755, 970, 50, 60], "confidence": 1.0},
+    {"ref": "C507", "type": "capacitor", "value": "22p", "tolerance": "5%", "pins": {"1": "r515b", "2": "gnd"}, "bbox": [8520, 2090, 40, 60], "confidence": 0.7, "note": "Same ground assumption as R523."},
+    {"ref": "C509", "type": "capacitor_polarized", "value": "10u", "pins": {"+": "out", "-": "oe"}, "bbox": [8580, 1715, 60, 40], "confidence": 1.0},
+
+    {"ref": "D501", "type": "diode", "value": "1SS176", "pins": {"A": "outh", "K": "d501k"}, "bbox": [8290, 1590, 45, 60], "confidence": 1.0},
+    {"ref": "D503", "type": "diode", "value": "1SS176", "pins": {"A": "d501k", "K": "d503k"}, "bbox": [8290, 1705, 45, 60], "confidence": 1.0},
+    {"ref": "Q501", "type": "npn", "value": "2SC2705", "pins": {"C": "vp", "B": "outh", "E": "q501e"}, "bbox": [8385, 1460, 100, 100], "confidence": 1.0},
+    {"ref": "Q503", "type": "pnp", "value": "2SA1145", "pins": {"C": "vn", "B": "outl", "E": "q503e"}, "bbox": [8385, 1915, 100, 100], "confidence": 1.0}
+  ],
+  "nets": [
+    {"name": "gnd", "label": "GND"},
+    {"name": "vp", "label": "+15.1V"},
+    {"name": "vn", "label": "-15.2V"}
+  ],
+  "connectors": [
+    {"ref": "JM11", "to": "P501/J504", "pins": {"1": "inp", "2": "inn", "3": "vp", "4": "outh", "5": "outl", "6": "vn"}, "bbox": [7005, 1660, 60, 360], "confidence": 1.0, "note": "PM11 module side; J504 pins map 1:1."},
+    {"ref": "J501", "to": "P401 (W005)", "pins": {"1": "lin", "2": "gnd"}, "bbox": [6080, 1820, 70, 260], "confidence": 0.9, "note": "Pins 3/4 carry the R channel (PM21), out of scope."},
+    {"ref": "J502", "to": "P601/J602 (W008)", "pins": {"1": "lout"}, "bbox": [9000, 1680, 60, 220], "confidence": 0.9, "note": "Pins 2/3 not traced for the pilot."}
+  ],
+  "annotations": [
+    {"net": "vp", "voltage": 15.1, "bbox": [7060, 1440, 40, 100], "note": "JM11 pin 3 rail"},
+    {"net": "vp", "voltage": 15.1, "bbox": [8410, 1320, 40, 100], "note": "Q501 collector"},
+    {"net": "vn", "voltage": -15.2, "bbox": [7250, 2050, 40, 110], "note": "JM11 pin 6 rail"},
+    {"net": "vn", "voltage": -15.2, "bbox": [8470, 2160, 40, 110], "note": "Q503 collector"},
+    {"net": "d1", "voltage": 14.7, "bbox": [7490, 1555, 110, 40], "note": "RM11 / QM11 drain / QM14 emitter"},
+    {"net": "d2", "voltage": 14.7, "bbox": [7570, 1495, 110, 40], "note": "RM12 / QM12 drain / QM15 emitter"},
+    {"net": "tail", "voltage": 0.17, "bbox": [7385, 1700, 40, 100], "note": "QM11/QM12 sources"},
+    {"net": "bias14", "voltage": 14.1, "bbox": [7700, 1745, 110, 40], "note": "QM14/QM15 bases"},
+    {"net": "c14", "voltage": -13.1, "bbox": [7630, 1810, 40, 110], "note": "QM14 collector / QM16 base"},
+    {"net": "e13", "voltage": -14.7, "bbox": [7510, 2090, 40, 110], "note": "QM13 emitter"},
+    {"net": "e16", "voltage": -13.6, "bbox": [8035, 1840, 40, 110], "note": "QM16 emitter"},
+    {"net": "outh", "voltage": 0.6, "bbox": [7990, 1725, 90, 40], "note": "QM15 collector (JM11.4)"},
+    {"net": "outh", "voltage": 0.6, "bbox": [8210, 1530, 40, 90], "note": "Q501 base"},
+    {"net": "outl", "voltage": -0.6, "bbox": [7915, 1780, 40, 90], "note": "QM16 collector (JM11.5)"},
+    {"net": "outl", "voltage": -0.6, "bbox": [8320, 2005, 90, 40], "note": "Q503 base"},
+    {"net": "q501e", "voltage": -0.02, "bbox": [8605, 1410, 40, 110], "note": "Q501 emitter (arrow to R519 top)"},
+    {"net": "q503e", "voltage": -0.04, "bbox": [8530, 1850, 110, 40], "note": "Q503 emitter (arrow to R521 bottom)"}
+  ]
+}

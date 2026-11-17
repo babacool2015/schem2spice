@@ -1,0 +1,39 @@
+# Testbench for crop p701: P701 power amp, both channels, Class AB, no signal, no load.
+# The supply comes from P801/P851 via J704/J705, outside the crop: the four rails are
+# driven at their printed values where they enter. R789/R791 and R790/R792 then drop
+# them to the 55.7/54.7 V and -56.0/-55.5 V lines, which are simulated.
+ground: R705.1          # power ground (ground symbol at J701)
+sources:
+  - {name: VPD, net: Q723.C, dc: 56.7, note: "+56.7 V pre-driver rail from J704/J705 (printed 56.7V)"}
+  - {name: VND, net: R792.2, dc: -57.0, note: "-57.0 V pre-driver rail from J704/J705 (printed -57.0V)"}
+  - {name: VPO, net: Q731.C, dc: 58.0, note: "+58.0 V output rail (printed 58.0V)"}
+  - {name: VNO, net: Q733.C, dc: -58.3, note: "-58.3 V output rail (printed -58.3V)"}
+  - {name: VINL, net: R701.1, dc: 0, ac: 1, note: "Left input from P601 J601 via J701.1"}
+  - {name: VINR, net: R702.1, dc: 0, ac: 1, note: "Right input from P601 J601 via J701.4"}
+cut:
+  - refs: [Q721, Q722, R759, R760, R761, R762, R753, R754, R749, R750]
+    why: >-
+      Class A/AB switch. The printed voltages (without "(A CLASS ...)") are Class AB,
+      where the photocoupler LEDs are off and Q721/Q722 leave R753/R754 open. The LED
+      lines (J703 "A" from P601, RN01/RN02 side) leave the crop. Class A is not simulated.
+      R749/R750 (12k) and R753/R754 (Class A bias trimmers) form the chain Q721/Q722 switch
+      across the Q719/Q720 base resistor; open in Class AB.
+  - refs: [QN03, RN08]
+    why: >-
+      QN03 (DC/power sense for the protection) has its collector on the line to QN04
+      TA7317P (page 8), which sets that node (printed -0.6V). At idle QN03 is off (base
+      and emitter both printed 56.7V); its base divider RN07/RN03/CN05 stays simulated.
+leaves:
+  - {pin: RN01.2, why: "DC-offset sense line (DN01/RN01) to the protection side and the Class A switch line, outside the crop."}
+  - {pin: RN02.2, why: "Right-channel twin of RN01.2, outside the crop."}
+params:
+  # Bias trimmers (2.2k, wired as rheostats). Set by the manual's idling-current
+  # procedure (PDF 12, sec. 5): Class AB, 18 mV across the whole of R781 (L) / R782 (R),
+  # i.e. 50 mA. Position = fraction of the track in circuit.
+  R751: 0.2125  # 18.0 mV across R781 (bisected; procedure step 3)
+  R752: 0.2125  # 18.0 mV across R782
+analyses:
+  - op
+tolerance:
+  rel: 0.10
+  abs: 0.05

@@ -1,0 +1,24 @@
+# Testbench for P401, both channels (crop p401, variant 22B). Nets are given as pins.
+# DC operating point against the printed voltages of PM31/PM41 and Q401-1/-2.
+ground: R405.2           # signal ground (J401 shield S1)
+sources:
+  - {name: VP, net: JM31.3, dc: 17.2, note: "+17.2 V rail after R425 (printed 17.2 V)"}
+  - {name: VN, net: JM31.6, dc: -17.2, note: "-17.2 V rail after R426 (printed -17.2 V)"}
+  - {name: VINL, net: J401.T1, dc: 0, ac: 1, note: "PHONO L input (J401 tip 1)"}
+  - {name: VINR, net: J401.T2, dc: 0, ac: 1, note: "PHONO R input (J401 tip 2)"}
+cut:
+  - refs: [C421, C422]
+    why: >-
+      Chassis RF decoupling from the J401 shields to the chassis terminal; that node is
+      only capacitors in this crop (no DC path) and has no DC role.
+  - region: [900, 3150, 1700, 4750]
+    why: >-
+      CD / TUNER / AUX line-input jacks J402-J404 with their 220k / 100p terminations;
+      they feed the input selector S401, not the phono stage.
+params:
+  S403: drawn    # drawn position = MM: the 100 ohm MC loads (R403/C403, R404/C404) are out
+analyses:
+  - op
+tolerance:
+  rel: 0.10
+  abs: 0.05

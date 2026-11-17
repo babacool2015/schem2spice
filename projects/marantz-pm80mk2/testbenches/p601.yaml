@@ -1,0 +1,26 @@
+# Testbench for P601 tone amp, both channels (crop p601, page 6, variant 22B).
+ground: J602.2             # signal ground from P501 (J502 pin 2)
+sources:
+  - {name: VRP, net: R627.2, dc: 18.4, note: "+18 V from P851 J854.1 (printed 18.4V there), via J604 to the R627/R629 node"}
+  - {name: VRN, net: R628.2, dc: -18.3, note: "-18 V from P851 J854.3 (printed -18.3V there), via J604 to the R628/R630 node"}
+  - {name: VINL, net: J602.1, dc: 0, ac: 1, note: "L in from P501 (J502 pin 1)"}
+  - {name: VINR, net: J602.3, dc: 0, ac: 1, note: "R in from P501 (J502 pin 3)"}
+# R627-R630 are simulated (they used to be cut, waiting for P851). The schematic prints all
+# four as 100 ohm, the parts list says R627/R628 470 and R629/R630 220; the list wins and
+# the printed rails agree: the drops 18.4-16.5 = 1.9 V (R627, one NJM2068) and
+# 18.4-15.9 = 2.5 V (R629, three) are in the ratio 1 : 1.32, as 470 : 3 x 220 = 1 : 1.40
+# gives for equal current per package (~4 mA); 100/100 would give 1 : 3.
+params:
+  # S601 DIRECT / SUBSONIC / MONO, all released (drawn position). Per-pole refs
+  # S601-1..8 can be set individually.
+  S601: drawn
+  # BASS / TREBLE at centre (position measured from pin 1).
+  R625-1: 0.5
+  R625-2: 0.5
+  R626-1: 0.5
+  R626-2: 0.5
+analyses:
+  - op
+tolerance:
+  rel: 0.10
+  abs: 0.05

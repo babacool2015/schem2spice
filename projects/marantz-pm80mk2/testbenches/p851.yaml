@@ -1,0 +1,36 @@
+# Testbench for crop p851: P851 power supply (PDF 10 copy), DC operating point.
+# A DC operating point cannot rectify AC, so the transformer side is cut and the raw
+# rectified rails are driven at their printed values on the reservoir capacitors.
+# What is simulated: the +-18 V regulators (Q851-Q854, D863/D864) and the 24 V / 15.3 V
+# supply (Q855, R863/R864, D877/D878), with P601 as the +-18 V load.
+ground: J852.2          # supply ground (centre tap of the +-31 V winding)
+sources:
+  - {name: VRP, net: C851.+, dc: 31.0, note: "+31.0 V raw (C851, printed 31.0V)"}
+  - {name: VRN, net: C852.-, dc: -31.0, note: "-31.0 V raw (C852, printed -31.0V)"}
+  - {name: VR24, net: C859.+, dc: 30.2, note: "Raw input of Q855 (C859, printed 30.2V)"}
+  - {name: VPA, net: C857.+, dc: 56.7, note: "+56.7 V raw to P701 (C857, printed 56.7V; passes straight through)"}
+  - {name: VNA, net: C858.-, dc: -57.0, note: "-57.0 V raw to P701 (C858, printed -57.0V; passes straight through)"}
+  - {name: VGA, net: C857.-, dc: 0, note: "Power-amp ground (centre tap of the +-57 V winding, J855.2); meets the supply ground off this sheet"}
+loads:
+  - {name: RL18P, net: J854.1, value: "920", note: "P601 on +18 V: ~20 mA (P601 simulated from 18.4 V through R627/R629: 5 + 15 mA)"}
+  - {name: RL18N, net: J854.3, value: "915", note: "P601 on -18 V: ~20 mA"}
+cut:
+  - refs: [D851, D852, D853, D854, D855, D856, D857, D858, D865, D866, D867, D868, D869, D870,
+           D871, D872, D873, D874, D875, D876, G851, R851, R852, R859, R860, R861, R862]
+    why: >-
+      Transformer side: the bridges (S5688G), the snubber G851 and the 1 ohm fuse
+      resistors in the AC lines. Their DC outputs are the driven raw rails.
+  - refs: [D879, D880, R865, R866, C862, R867, R868, Q856, R869, Q857, D881, R870, R871, C863]
+    why: >-
+      Power-off detector: D879/D880 hold C862 at the negative AC peak, which a DC
+      operating point cannot produce; Q856/Q857 then drive the P.OFF line (J853.5) to
+      the protection. Its printed -52.4 V (Q856 collector) is not simulated.
+leaves:
+  - {pin: J853.1, why: "15.3 V out to P601 / P201 (J853 W014 pin 1)"}
+  - {pin: J853.3, why: "24 V out to P701 J703 (relays)"}
+  - {pin: J853.4, why: "Class A line, passes through J851.5 -> J853.4 (not a supply)"}
+analyses:
+  - op
+tolerance:
+  rel: 0.10
+  abs: 0.05

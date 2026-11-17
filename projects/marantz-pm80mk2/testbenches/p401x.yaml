@@ -1,0 +1,27 @@
+# Testbench for crop p401x: P401 (as testbenches/p401.yaml) plus the input selector's
+# playback poles S401-1/-2 and the line jacks, for the system chain (systems/chain.yaml).
+ground: R405.2           # signal ground (J401 shield S1)
+sources:
+  - {name: VP, net: JM31.3, dc: 17.2, note: "+17.2 V rail after R425 (printed 17.2 V)"}
+  - {name: VN, net: JM31.6, dc: -17.2, note: "-17.2 V rail after R426 (printed -17.2 V)"}
+cut:
+  - refs: [C421, C422]
+    why: >-
+      Chassis RF decoupling from the J401 shields to the chassis terminal; that node is
+      only capacitors in this crop (no DC path) and has no DC role.
+  - region: [900, 3150, 1700, 5310]
+    keep: [R427, R428]
+    why: >-
+      Line-input jack block J402-J404: shield caps C423-C436, 100p caps C437-C444 and the
+      220k terminations of the inputs not simulated. The CD terminations R427/R428 stay
+      (part of the CD input impedance). On the scan the TUNER R tip (J403.T2) and C440
+      trace onto the right ground net, where R430's label crosses the wires; that throw
+      (S401-2 pin 3) is open in every simulated position.
+params:
+  S403: drawn    # MM: the 100 ohm MC loads (R403/C403, R404/C404) are out
+  S401: 2        # input selector: 1 PHONO, 2 CD (drawn), 3 TUNER, 4 AUX, 5 DCC, 6 TAPE
+analyses:
+  - op
+tolerance:
+  rel: 0.10
+  abs: 0.05

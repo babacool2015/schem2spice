@@ -1,0 +1,8 @@
+# Corrections for crop p651 (pages/page-06.png, P651 balance board, scale 1.26).
+# Same rules as corrections/p401l.yaml. status: proposed (read off the scan by Claude,
+# unchecked) | confirmed.
+components:
+  - {page: 6, at: [3734, 3738], type: resistor, ref: R652, value: 1.5k, status: proposed,
+     why: 'Label "R652 1.5k" right of the symbol, between J651.6 and the R651-1 wiper. OCR read "R65" / "6".'}
+  - {page: 6, at: [3665, 3952], type: resistor, ref: R653, value: 1.5k, status: proposed,
+     why: 'Label "R653 1.5k" right of the symbol, between J651.5 and the R651-2 wiper. OCR read "R65" / "653".'}

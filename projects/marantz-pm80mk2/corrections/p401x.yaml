@@ -1,0 +1,14 @@
+# Corrections for crop p401x (pages/page-04.png): p401 plus the S401 playback poles and
+# the line jacks. Same rules as corrections/p401l.yaml; p401's items are included.
+# status: proposed (read off the scan by Claude, unchecked) | confirmed.
+include: [p401]
+components:
+  - {page: 4, at: [2793, 5111], type: rotary_pole, ref: S401-1, status: confirmed,
+     why: 'Label "S401-1" left of the pole. Throw 1 meets R423 (phono L out), 2-5 the CD/TUNER/AUX/DCC L tips (J402-J404 T1).'}
+  - {page: 4, at: [3447, 5108], type: rotary_pole, ref: S401-2, status: confirmed,
+     why: 'Label "S401-2" right of the pole. Throw 1 meets R424 (phono R out), 2 the CD R tip (J402 T2).'}
+  - {page: 4, at: [3693, 3716], type: diode, ref: DM44, status: confirmed,
+     why: 'Label "DM44 *" beside the symbol in PM41; read in crop p401, missed in this taller crop (OCR tiles shift).'}
+annotations:
+  - {page: 4, at: [4353, 3425], voltage: 0.0, net_pin: Q401-2.+, status: confirmed,
+     why: 'Lower "0V" left of Q401-2 marks its + input (ground; crop p401 attaches it there). In this taller crop it went to the V- wire beside it (-17.2 V).'}

@@ -1,0 +1,62 @@
+# Corrections for crop p851 (pages/page-10.png, P851 power supply; PDF 9 has the same board).
+# Same rules as corrections/p401l.yaml: components match by type + page position
+# (within 40 px of `at`), annotations by label position.
+# status: proposed (read off the scan by Claude, unchecked) | confirmed.
+# page: PDF page (tools' numbering). PDF 10 = printed pp. 13/14; P851 is on printed p. 13.
+components:
+  # --- +-57 V bridge (J851 AC in): rows of four, labels above the top row, below the bottom row ---
+  - {page: 10, at: [1671, 1718], type: diode, ref: D870, value: S5688G, status: confirmed, why: 'Bottom row, 1st: label "D870 S5688G" below.'}
+  - {page: 10, at: [1816, 1717], type: diode, ref: D869, value: S5688G, status: confirmed, why: 'Bottom row, 2nd: label "D869 S5688G" below.'}
+  - {page: 10, at: [2028, 1715], type: diode, ref: D868, value: S5688G, status: confirmed, why: 'Bottom row, 3rd: label "D868 S5688G" below.'}
+  - {page: 10, at: [2172, 1715], type: diode, ref: D867, value: S5688G, status: confirmed, why: 'Bottom row, 4th: label "D867 S5688G" below.'}
+  # --- +-31 V bridge (J852 AC in) ---
+  - {page: 10, at: [1675, 2184], type: diode, ref: D857, value: S5688G, status: confirmed, why: 'Top row, 1st: label "D857 S5688G" above.'}
+  - {page: 10, at: [1818, 2180], type: diode, ref: D858, value: S5688G, status: proposed,
+     why: 'Top row, 2nd: label "D858 S5688G" above. OCR gave it "D855", which labels the diode below it.'}
+  - {page: 10, at: [2031, 2179], type: diode, ref: D851, value: S5688G, status: confirmed, why: 'Top row, 3rd: label "D851 S5688G" above.'}
+  - {page: 10, at: [2175, 2178], type: diode, ref: D852, value: S5688G, status: confirmed, why: 'Top row, 4th: label "D852 S5688G" above.'}
+  - {page: 10, at: [1820, 2321], type: diode, ref: D855, value: S5688G, status: confirmed, why: 'Bottom row, 2nd: label "D855 S5688G" above it, between the rows.'}
+  - {page: 10, at: [2033, 2319], type: diode, ref: D854, value: S5688G, status: confirmed, why: 'Bottom row, 3rd: label "D854 S5688G" below.'}
+  - {page: 10, at: [2176, 2318], type: diode, ref: D853, value: S5688G, status: confirmed, why: 'Bottom row, 4th: label "D853 S5688G" below.'}
+  - {page: 10, at: [1420, 2293], type: rc_snubber, ref: G851, value: 0.47u+6.8, status: confirmed,
+     why: 'Label "G851" (vertical) below and "0.47U+6.8" right of the dashed box, across the J852 AC input.'}
+  - {page: 10, at: [1926, 2429], type: resistor, ref: R852, value: "1", status: confirmed, why: 'Label "R852 1 1/4W" left of the symbol (fuse resistor in the AC line).'}
+  - {page: 10, at: [2105, 2531], type: resistor, value: "1", status: confirmed, why: 'R862: "1 1/4W" printed under the ref; OCR fused it with diode refs.'}
+  # --- 24 V / 15 V (D873-D876 bridge, Q855) ---
+  - {page: 10, at: [3014, 1564], type: diode, ref: D873, value: S5688G, status: confirmed, why: 'Label "D873 S5688G" above.'}
+  - {page: 10, at: [3153, 1563], type: diode, ref: D874, value: S5688G, status: confirmed, why: 'Label "D874 S5688G" above.'}
+  - {page: 10, at: [3327, 1760], type: capacitor_polarized, ref: C859, value: 1000u, status: confirmed, why: 'Label "C859 1000/35V" right of the symbol, regulator input (30.2 V).'}
+  - {page: 10, at: [3550, 1607], type: regulator, ref: Q855, value: NJM78M24A, status: confirmed, why: 'Label "Q855 NJM78M24A" above the box.'}
+  - {page: 10, at: [3759, 1757], type: capacitor_polarized, ref: C860, value: 10u, status: confirmed, why: 'Label "C860 10/50V" left of the symbol, regulator output (23.7 V).'}
+  - {page: 10, at: [4016, 1562], type: resistor, ref: R864, value: "330", status: confirmed, why: 'Label "R864 330 1/4W" above the symbol (second of R863/R864 to the 15.3 V line).'}
+  - {page: 10, at: [4124, 1664], type: diode, ref: D877, status: confirmed, why: 'Label "D877 7.5V" left of the zener (upper of the two).'}
+  - {page: 10, at: [4224, 1755], type: capacitor_polarized, ref: C861, value: 100u, status: confirmed, why: 'Label "C861 100/16V" (vertical) beside the symbol on the 15.3 V line.'}
+  - {page: 10, at: [2867, 1346], type: capacitor, ref: C864, value: 0.01u, status: confirmed, why: 'Label "C864 0.01" right of the symbol, below J855.'}
+  # --- +-18 V regulators ---
+  - {page: 10, at: [2887, 2418], type: pnp, ref: Q851, value: 2SA970, status: confirmed, why: 'Label "Q851 2SA970" below the symbol.'}
+  - {page: 10, at: [3054, 3407], type: darlington_pnp, ref: Q854, value: 2SB1022, status: confirmed, why: 'Label "Q854 2SB1022" above the symbol (-18 V pass transistor).'}
+  - {page: 10, at: [3269, 3489], type: resistor, ref: R858, value: "1", status: confirmed, why: 'Label "R858 1 1/4W" above the symbol (-18 V output).'}
+  - {page: 10, at: [3263, 2133], type: resistor, value: "1", status: confirmed, why: 'R857: "1 1/4W" printed under the ref (+18 V output).'}
+  - {page: 10, at: [2245, 2872], type: capacitor_polarized, ref: C862, value: 1u, status: confirmed, why: 'Label "C862 1/50V" below the symbol.'}
+  - {page: 10, at: [2493, 2871], type: capacitor_polarized, ref: C852, value: 2200u, status: confirmed, why: 'Label "C852 2200/35V" right of the symbol (-31 V reservoir).'}
+  - {page: 10, at: [3370, 2865], type: capacitor_polarized, ref: C856, value: 470u, status: confirmed, why: 'Label "C856 470/25V" (vertical) right of the symbol, -18 V output.'}
+  # --- power-off detect ---
+  - {page: 10, at: [4197, 2627], type: diode, ref: D881, status: confirmed, why: 'Label "D881 *" below the symbol, beside Q857.'}
+  - {page: 10, at: [4199, 2379], type: resistor, ref: R871, value: 100k, status: confirmed, why: 'Label "R871 100k" right of the symbol, by J854.'}
+  # --- values OCR missed (fuse resistors, common parts) ---
+  - {page: 10, at: [1595, 1435], type: resistor, value: "1", status: confirmed, why: 'R859: "1 1/4W" printed under the ref.'}
+  - {page: 10, at: [1488, 1688], type: resistor, value: "1", status: confirmed, why: 'R860: "1 1/4W" printed beside the ref.'}
+  - {page: 10, at: [1823, 3002], type: resistor, value: "47", status: confirmed, why: 'R866: "47 1/4W" printed under the ref.'}
+  - {page: 10, at: [1824, 3109], type: resistor, value: "47", status: confirmed, why: 'R865: "47 1/4W" printed under the ref.'}
+  - {page: 10, at: [3915, 2628], type: resistor, value: 10k, status: confirmed, why: 'R869: "10k" printed under the ref; OCR read "1k".'}
+annotations:
+  - {page: 10, at: [3154, 2688], voltage: 20.0, delete: true, status: confirmed,
+     why: '"20.0V" is the zener rating printed beside D863 (part of its label), not a node voltage.'}
+  - {page: 10, at: [3157, 2899], voltage: 20.0, delete: true, status: confirmed,
+     why: '"20.0V" is the zener rating printed beside D864.'}
+  - {page: 10, at: [4039, 1684], voltage: 7.5, delete: true, status: confirmed,
+     why: '"7.5V" is the zener rating printed beside D877.'}
+  - {page: 10, at: [4038, 1827], voltage: 9.5, delete: true, status: confirmed,
+     why: "D878's zener rating \"7.5V\", read \"9.5V\"; not a node voltage."}
+  - {page: 10, at: [3218, 3557], voltage: -18.4, net_pin: Q854.E, status: proposed,
+     why: '"-18.4V" right of Q854 marks its emitter (before R858; -18.3V after it); it was put on a wire stub with no part.'}

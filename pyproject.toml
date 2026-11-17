@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "schem2spice"
+version = "0.1.0"
+description = "Turn scanned hi-fi service-manual schematics into a BOM, a SPICE netlist and an ngspice simulation checked against the printed voltages"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["spice", "ngspice", "schematic", "ocr", "reverse-engineering", "hifi", "audio"]
+requires-python = ">=3.11"
+dependencies = [
+    "pymupdf>=1.24",
+    "pillow>=10",
+    "numpy>=1.26",
+    "pydantic>=2.6",
+    "pyyaml>=6",
+    "opencv-python-headless>=4.9",
+    "rapidocr>=3",
+    "onnxruntime>=1.17",
+]
+
+[project.scripts]
+schem2spice = "schem2spice.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["project: needs the reference project's PDF (skipped without it)"]

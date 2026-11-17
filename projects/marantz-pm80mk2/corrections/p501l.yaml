@@ -1,0 +1,39 @@
+# Corrections for crop p501l (pages/page-04.png, P501 left channel + PM11).
+# Each item matches the detected symbol of `type` whose centre is within 40 px of
+# `at` (page px) on PDF page `page`, and overrides its ref and/or value; `delete: true` drops a false
+# detection. status: proposed (read off the scan by Claude, unchecked) | confirmed.
+# Only confirmed items apply unless `extract --proposed` is passed.
+# page: PDF page (tools' numbering). PDF 4 = printed pp. 3/4; this crop is on printed p. 4.
+components:
+  # --- refs OCR did not read (in the golden scope) ---
+  - {page: 4, at: [8774, 1739], type: resistor, ref: R527, value: 1.5k, status: confirmed,
+     why: 'Label "R527 1.5k" above the symbol, between C509 and J502.'}
+  - {page: 4, at: [7475, 1994], type: npn, ref: QM13, status: confirmed,
+     why: 'Label "QM13 2SC2240" left of the symbol. The p501l OCR pass missed it (the pm11 crop reads it).'}
+  - {page: 4, at: [8613, 1733], type: capacitor_polarized, ref: C509, value: 10u, status: confirmed,
+     why: 'Label "C509 10/50V" above the symbol.'}
+  - {page: 4, at: [8455, 1823], type: resistor, ref: R521, value: "10", status: confirmed,
+     why: 'Label "R521 10" right of the symbol, below R519.'}
+  - {page: 4, at: [8543, 2107], type: capacitor, ref: C507, value: 22p, status: confirmed,
+     why: 'Label "C507 22pF" below the symbol; OCR read "507" as its value.'}
+  - {page: 4, at: [7594, 1083], type: resistor, ref: R513, value: 3.3M, status: confirmed,
+     why: 'Label "R513 3.3M" above the symbol, third of the R509/R511/R513 chain.'}
+  - {page: 4, at: [7088, 910], type: capacitor, ref: C503, value: 47p, status: confirmed,
+     why: 'Label "C503 47p" right of the symbol, in parallel with R507.'}
+  - {page: 4, at: [7944, 1679], type: pnp, ref: QM15, value: 2SA970, status: confirmed,
+     why: 'Label "QM15 2SA970" above the symbol. The p501l OCR pass missed it (the pm11 crop reads it).'}
+  # --- wrong ref ---
+  - {page: 4, at: [7091, 741], type: resistor, ref: R525, value: "100", status: confirmed,
+     why: 'Label above reads "R525 100 1/4W". OCR gave this part the "R526" label, which belongs to the resistor below.'}
+  - {page: 4, at: [7091, 856], type: resistor, ref: R526, value: "100", status: confirmed,
+     why: 'Label "R526 100 1/4W" above the symbol (-15 V rail feed).'}
+  # --- values the parts list cannot settle ---
+  - {page: 4, at: [8688, 1965], type: resistor, value: 100k, status: confirmed,
+     why: 'R523: "100k" is printed below the ref; OCR missed it and R523 is a common part (value only on the schematic).'}
+  - {page: 4, at: [6389, 1712], type: potentiometer, value: 250k, status: confirmed,
+     why: 'R529-2. No value printed. Parts list: 250k x2 + 2k x2. This section is the volume control between J501.1 and ground, so 250k (inferred, not read).'}
+  - {page: 4, at: [6388, 1256], type: potentiometer, ref: R529-1, value: 2k, status: confirmed,
+     why: 'Label "R529-1" left of the symbol. No value printed; it is the rheostat in the AC feedback leg with R505 220, so the 2k section (inferred, not read).'}
+  # --- outside the golden scope, inside the crop ---
+  - {page: 4, at: [8748, 2806], type: capacitor_polarized, ref: C511, value: 330u, status: confirmed,
+     why: 'Right capacitor of the back-to-back pair; label "C511 330/16V" below it ("C512" is the left one).'}

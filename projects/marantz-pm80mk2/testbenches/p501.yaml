@@ -1,0 +1,35 @@
+# Testbench for crop p501: P501 volume board, both channels (PM11 left, PM21 right).
+# Same scope and sources as tests/golden/pm11/testbench.yaml, plus the right channel.
+ground: R501.2          # left-channel ground (J502.2); crops hold no ground symbol
+sources:
+  - {name: VP, net: JM11.3, dc: 15.1, note: "Left +rail (printed 15.1 V); on the scan it has no drawn junction to the R525 rail"}
+  - {name: VPR, net: JM21.3, dc: 15.1, note: "Right +rail after R525 (printed 15.1 V)"}
+  - {name: VN, net: JM11.6, dc: -15.2, note: "-rail after R526, shared by both modules (printed -15.2 V)"}
+  - {name: VIN, net: R529-2.2, dc: 0, ac: 1, note: "Left signal from P401 via J501.1 (J501 is outside the crop)"}
+  - {name: VINR, net: R529-4.2, dc: 0, ac: 1, note: "Right signal from P401 via J501.4 (W005 is pin for pin: 1 L, 2 L gnd, 3 R gnd, 4 R)"}
+  - name: VGNDR
+    net: R502.2
+    dc: 0
+    note: >-
+      Right-channel ground (R529-4, R502, R506, C502, R524, C508). Inside the crop it
+      joins nothing else: it leaves to J501 (the ground of the right input from P401);
+      tied to ground here.
+loads:
+  - {name: RLOAD, net: J502.1, value: 47k, note: "Stand-in for P601 input (J602)"}
+  - {name: RLOADR, net: J502.3, value: 47k, note: "Stand-in for P601 input (J602), right"}
+cut:
+  - refs: [R525, R526, C511, C512]
+    why: >-
+      Supply feeds and decoupling upstream of the 15.1 / -15.2 V rails; the rails are
+      driven by VP/VPR/VN.
+params:
+  # Volume pot R529 (4 ganged sections). Position 0..1 measured from pin 1.
+  R529-1: 0.5
+  R529-2: 0.5
+  R529-3: 0.5
+  R529-4: 0.5
+analyses:
+  - op
+tolerance:
+  rel: 0.10
+  abs: 0.05

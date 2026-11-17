@@ -1,0 +1,208 @@
+# Symbol library: canonical pin names per component type.
+# IR pin maps must use these names, never visual order guessed per instance.
+# spice: element letter and pin order used by netlist.py.
+# template_pins: [x, y] of each lead end in symbols/templates/<type>.png (unrotated).
+# pin_reach: how far from its point a pin attaches to a wire (default trace.PIN_TOL).
+# swappable: pins that are drawn identically; `trace` names them by page position
+#   (first = top/left) and diffs ignore their order.
+
+resistor:
+  pins: ["1", "2"]
+  spice: {letter: R, order: ["1", "2"]}
+  template_pins: {"1": [18.5, 0], "2": [19, 75]}
+  swappable: ["1", "2"]
+
+capacitor:
+  pins: ["1", "2"]
+  spice: {letter: C, order: ["1", "2"]}
+  template_pins: {"1": [0, 24.5], "2": [73, 25]}
+  swappable: ["1", "2"]
+
+capacitor_polarized:
+  pins: ["+", "-"]
+  spice: {letter: C, order: ["+", "-"]}
+  template_pins: {"-": [0, 30], "+": [71, 30.5]}
+
+diode:
+  pins: [A, K]
+  spice: {letter: D, order: [A, K]}
+  template_pins: {A: [22.5, 0], K: [23, 55]}
+
+npn:
+  pins: [C, B, E]
+  spice: {letter: Q, order: [C, B, E]}
+  template_pins: {C: [37.5, 0], B: [109, 56], E: [37.5, 109]}
+
+pnp:
+  pins: [C, B, E]
+  spice: {letter: Q, order: [C, B, E]}
+  template_pins: {E: [36, 0], B: [109, 57], C: [36, 109]}
+
+njfet:
+  pins: [D, G, S]
+  spice: {letter: J, order: [D, G, S]}
+  template_pins: {D: [86, 0], G: [0, 56], S: [85.5, 109]}
+  swappable: [D, S]  # drawn symmetric; SPICE JFETs are symmetric too
+
+# Potentiometer: "1" and "2" are the track ends, "W" the wiper.
+# Emitted as two resistors; the wiper position is a testbench parameter
+# (0 = wiper at pin 1, 1 = wiper at pin 2).
+potentiometer:
+  pins: ["1", "2", W]
+  spice: {expand: potentiometer}
+  template_pins: {"1": [22.5, 0], W: [63, 35.5], "2": [22, 69]}
+  swappable: ["1", "2"]
+  drawings:
+    # Balance pot with a centre dead band (P651 R651-1/-2, page 6): a box (the
+    # conductive half of the track) between pin 1 and the zigzag, the wiper drawn at
+    # the box end. Pin 1 is the box's outer end, so position 0 = wiper on the dead
+    # band (balance centre, full signal); not swapped by position. R651-2 is drawn
+    # mirrored with its zigzag rotated, which the R651-1 drawing does not match on the
+    # right side (wiper side 0.633 vs 0.732 rotated), so both are cut (@2 R651-1,
+    # @3 R651-2). P651 is drawn once in the manual: no unseen copy to test on. Best
+    # other hit on pages 4, 6, 7, 10: see detect.THRESHOLDS note.
+    potentiometer@2: {template_pins: {"1": [22.5, 0], "2": [23, 132], W: [66, 94.5]}, swappable: []}
+    potentiometer@3: {template_pins: {"1": [24, 132], "2": [22, 0], W: [66, 36.5]}, swappable: []}
+
+# Not a component: marks the net it touches as ground.
+ground:
+  pins: [G]
+  template_pins: {G: [26.5, 0]}
+
+# Not a component: one pin of a connector (circle between bracket walls, lead
+# leaving at P). `trace` groups stacked pins into a connector, numbered from the
+# top (or left), and erases the bracket.
+connector_pin:
+  pins: [P]
+  template_pins: {P: [75, 31]}
+  back: [0, 31]  # back wall of the bracket: a wire ending here passes through the pin
+
+# Inductor (choke). Template cut from L402 (page 4); L401 stays unseen.
+inductor:
+  pins: ["1", "2"]
+  spice: {letter: L, order: ["1", "2"]}
+  template_pins: {"1": [25, 0], "2": [25, 117]}
+  swappable: ["1", "2"]
+
+# Op-amp section (one half of a dual such as NJM2068, ref "Q401-1"). Pins are the
+# circle terminals. Each section of a dual draws one supply pin only (V+ on the top
+# edge, or V- on the bottom edge); the other is supplied by its sibling section, so
+# supply pins are optional. Template cut from Q401-2 with its V- circle replaced by
+# the plain edge; Q401-1 stays unseen.
+opamp:
+  pins: ["+", "-", out, "V+", "V-"]
+  optional_pins: ["V+", "V-"]
+  spice: {letter: X, order: ["+", "-", "V+", "V-", out]}
+  template_pins: {"-": [0, 47], "+": [0, 159], out: [265, 100], "V+": [146, 44], "V-": [146, 158]}
+
+# Not a component: one RCA socket (tip T, sleeve/shield S). `trace.to_ir` stacks the
+# sockets of one jack block into a connector (J401) with pins T1/S1 (top), T2/S2...
+# Template cut from J402 (page 4); J401 stays unseen.
+rca_jack:
+  pins: [T, S]
+  template_pins: {T: [69, 34], S: [38, 83]}
+
+# One pole of a push/slide switch: a column of three terminal circles, C (common) in
+# the middle, the drawn "]" bar bridging C to "2". A drawing that shows the other
+# position is the mirrored variant, so "drawn" always means C-2 closed. Emitted as
+# two resistors; the testbench param <base ref> (e.g. S403, shared by all poles
+# S403-1..4) is "drawn" (C-2 closed) or "other" (C-1 closed). An unused contact has
+# no wire, so throws may float. Template cut from S403 lower-left pole (page 4).
+switch_spdt:
+  pins: ["1", C, "2"]
+  may_float: ["1", "2"]
+  spice: {expand: switch}
+  # Pins at the circle centres: a lead may leave a terminal in any direction.
+  template_pins: {"1": [20, 20], C: [20, 76], "2": [20, 132]}
+  pin_reach: 26  # px from the centre to the END of a wire that is this terminal's lead
+  rim: 21  # px: a lead's ink starts within this of the centre (circle radius ~17); a
+           # wire passing beside an unwired terminal lies further out (P601 S601: 26-29)
+
+# One pole of a rotary selector (S401 input selector, page 4): six terminal circles on
+# an arc around the common C, a wiper drawn from C to the throw of the drawn knob
+# position. Throws are numbered along the arc from the top-right circle (template
+# orientation); for S401 that is the knob order PHONO, CD, TUNER, AUX, DCC, TAPE, and
+# the sheet draws position 2 (CD). Emitted as six resistors; the testbench param
+# <base ref> (S401, shared by S401-1..4) is the closed throw, 1..6 or "drawn" (= 2).
+# Template cut from S401-1, circles and wiper only (wire stubs blanked); S401-2 stays
+# unseen (0.862), S401-3/-4 0.75-0.77, best other hit on pages 4/6 < 0.4.
+rotary_pole:
+  pins: [C, "1", "2", "3", "4", "5", "6"]
+  may_float: ["1", "2", "3", "4", "5", "6"]
+  spice: {expand: rotary}
+  drawn: "2"
+  template_pins: {"1": [124, 22], "2": [64, 50], "3": [22, 92], "4": [22, 150], "5": [64, 194], "6": [124, 224], C: [108, 122]}
+  pin_reach: 26
+  rim: 21
+
+# --- page 7 (P701), cut at the page-4 scale from the normalized crop (scale 1.26) ---
+
+# LED in a round outline (P701 D715 LT3D8B, used as a voltage reference). Template cut
+# from D715; D716-D718 stay unseen (0.90-0.91, best false hit 0.49).
+led:
+  pins: [A, K]
+  spice: {letter: D, order: [A, K]}
+  template_pins: {A: [78, 0], K: [78, 118]}
+
+# Darlington transistor in a rounded outline (P701 Q719 2SD1508, bias stage).
+# Template cut from Q719; Q720 stays unseen (0.84). Emitted as a subcircuit.
+darlington:
+  pins: [C, B, E]
+  spice: {letter: X, order: [C, B, E]}
+  template_pins: {B: [0, 67], C: [200, 0], E: [200, 163]}
+  drawings:
+    # P851 Q853 2SD1417, drawn upright (base at the bottom); cut from the PDF 10 copy,
+    # the PDF 9 copy stays unseen.
+    darlington@2: {template_pins: {C: [0, 69], E: [153, 69], B: [63, 269]}}
+
+# Photocoupler (P701 Q721 PC817): LED A/K below, phototransistor C/E above, between
+# two bracket walls. Template cut from Q721; Q722 stays unseen (0.90).
+photocoupler:
+  pins: [A, K, C, E]
+  spice: {letter: X, order: [A, K, C, E]}
+  template_pins: {C: [22, 0], E: [135, 0], A: [22, 181], K: [135, 181]}
+
+# Centre-tapped resistor, value per half (P701 R781 "0.18X2 3W": emitter resistors of
+# an output pair, the tap is the output). Emitted as two resistors 1-M and M-2.
+# Template cut from R783; R781/R782/R784 stay unseen (0.87-0.90).
+resistor_ct:
+  pins: ["1", M, "2"]
+  spice: {expand: center_tap}
+  template_pins: {"1": [75, 0], M: [0, 127], "2": [75, 261]}
+  swappable: ["1", "2"]
+
+# PNP Darlington in a rounded outline (P851 Q854 2SB1022, -18 V pass transistor): base
+# at the top, collector left, emitter right. Cut from the PDF 10 copy; the PDF 9 copy
+# stays unseen (0.90).
+darlington_pnp:
+  pins: [C, B, E]
+  spice: {letter: X, order: [C, B, E]}
+  template_pins: {B: [93, 0], C: [0, 193], E: [181, 193]}
+
+# Three-terminal regulator (P851 Q855 NJM78M24A): a box with IN/OUT circles on the sides
+# and GND at the bottom. Cut from the PDF 10 copy; PDF 9 copy unseen (0.82).
+regulator:
+  pins: [IN, OUT, GND]
+  spice: {letter: X, order: [IN, GND, OUT]}
+  template_pins: {IN: [0, 67], OUT: [269, 67], GND: [133, 209]}
+
+# RC snubber in one package (P851 G851 "0.47U+6.8": 0.47 uF in series with 6.8 ohm,
+# across the AC input). Value "<C>+<R>". Emitted as C and R in series.
+# Cut from the PDF 10 copy; PDF 9 copy unseen (0.87).
+rc_snubber:
+  pins: ["1", "2"]
+  spice: {expand: series_rc}
+  template_pins: {"1": [53, 0], "2": [53, 233]}
+  swappable: ["1", "2"]
+
+# Not a component: the safety mark (triangle with "!") printed beside safety-critical
+# parts on the supply sheets. `trace` erases it, keeping any straight wire it touches
+# (its apex often sits on a wire, and its sides would pass for an arrow). Cut from the
+# P851 Q854 mark (PDF 10); the PDF 9 copies score 0.84-0.91, other sheets <= 0.59.
+warning:
+  pins: []
+  template_pins: {}
+  # warning@2.png: the mark with a wire across its apex (P851 D873/D874, 0.66 on the
+  # plain template); PDF 9 copy unseen (0.81), other sheets <= 0.54.
+  drawings:
+    warning@2: {template_pins: {}}

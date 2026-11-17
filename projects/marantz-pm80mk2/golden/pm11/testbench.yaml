@@ -1,0 +1,28 @@
+# Testbench for the PM11 pilot (see meta.cuts in ir.json).
+# Nets are given as pins ("JM11.3") so the same bench drives the hand-built golden IR
+# and the IR extracted from crop p501l (whose nets are named n1, n2...).
+ground: R501.2          # crops hold no ground symbol on this net
+sources:
+  - {name: VP, net: JM11.3, dc: 15.1, note: "P501 +rail after R525 (printed 15.1 V)"}
+  - {name: VN, net: JM11.6, dc: -15.2, note: "P501 -rail after R526 (printed -15.2 V)"}
+  - {name: VIN, net: R529-2.2, dc: 0, ac: 1, note: "Signal from P401 via J501.1 (J501 is outside crop p501l)"}
+loads:
+  - {name: RLOAD, net: J502.1, value: 47k, note: "Stand-in for P601 input; not traced yet"}
+cut:
+  # Same scope as the golden IR. Absent refs (the golden IR has none of these) are noted, not errors.
+  - refs: [R525, R526, C511, C512]
+    why: >-
+      Supply feeds and decoupling upstream of the 15.1 / -15.2 V rails, shared with PM21;
+      the rails are driven by VP/VN. On the scan the left channel's +15.1 V net
+      (J504.3 - Q501.C) has no drawn junction to the R525 rail at all.
+  - refs: [R508, R510, R512, R514, C504, C506]
+    why: Right-channel (PM21) parts that crop p501l includes; not part of the left channel.
+params:
+  # Volume pot R529 (ganged). Position 0..1 measured from pin 1 (top end).
+  R529-2: 0.5
+  R529-1: 0.5
+analyses:
+  - op
+tolerance:
+  rel: 0.10   # +/-10 % of printed value
+  abs: 0.05   # floor in volts, for printed values near 0 V

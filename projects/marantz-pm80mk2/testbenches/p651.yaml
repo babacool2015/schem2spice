@@ -1,0 +1,8 @@
+# Testbench for crop p651: P651 balance board. Passive, no rails, no printed voltages;
+# used only inside the system chain (systems/chain.yaml), where W009 joins it to P601.
+params:
+  # Balance pot, position from pin 1 (the dead-band end): 0 = centre detent, both
+  # channels at full level; moving one wiper onto its track attenuates that channel.
+  R651-1: 0
+  R651-2: 0
+analyses: []

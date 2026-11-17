@@ -1,0 +1,147 @@
+# Corrections for crop p701 (pages/page-07.png, P701 power amp, both channels).
+# Same rules as corrections/p401l.yaml: components match by type + page position
+# (within 40 px of `at`), annotations by label position.
+# status: proposed (read off the scan by Claude, unchecked) | confirmed.
+# page: PDF page (tools' numbering). PDF 7 = printed pp. 9/10; P701 is on printed p. 9.
+# Odd refs are the left channel (top half of the sheet), even refs the right.
+components:
+  # --- left channel: refs OCR did not read ---
+  - {page: 7, at: [1997, 1845], type: capacitor_polarized, ref: C713, value: 10u, status: confirmed,
+     why: 'Label "C713 10/50V" above the symbol, after R701 (input coupling).'}
+  - {page: 7, at: [2194, 1959], type: capacitor, ref: C701, value: 330p, status: confirmed,
+     why: 'Label "C701 330p/100V" (vertical) below the symbol. NB the parts list says 100pF.'}
+  - {page: 7, at: [2152, 2862], type: capacitor_polarized, ref: C720, value: 220u, status: confirmed,
+     why: 'Label "C720 220/63V" (vertical) above the symbol, on the ground line. NB the parts list says 330uF 50V.'}
+  - {page: 7, at: [2442, 2948], type: resistor, ref: R711, value: "180", status: confirmed,
+     why: 'Label "R711 180" right of the symbol, Q703 emitter.'}
+  - {page: 7, at: [2634, 1843], type: npn, ref: Q701-1, value: 2SC3067, status: confirmed,
+     why: 'Left half of the dual "Q701 2SC3067" (dashed box joins the two halves); its base takes the input.'}
+  - {page: 7, at: [2785, 1843], type: npn, ref: Q701-2, value: 2SC3067, status: confirmed,
+     why: 'Right half of the dual Q701 (feedback side, -0.2V at its base).'}
+  - {page: 7, at: [2998, 1447], type: pnp, ref: Q705, value: 2SA970, status: confirmed,
+     why: 'Label "Q705 2SA970" above the symbol (current mirror).'}
+  - {page: 7, at: [3343, 1446], type: pnp, ref: Q707, value: 2SA970, status: confirmed,
+     why: 'Label "Q707 2SA970" above the symbol.'}
+  - {page: 7, at: [3189, 1557], type: resistor, ref: R721, value: 47k, status: confirmed,
+     why: 'Label "R721 47k" right of the symbol, between Q705 and Q707.'}
+  - {page: 7, at: [3651, 2943], type: resistor, ref: R731, value: 1k, status: confirmed,
+     why: 'Label "R731 1k" left of the symbol, below D717.'}
+  - {page: 7, at: [3738, 2790], type: led, ref: D717, value: LT3D8B, status: confirmed,
+     why: 'Label "D717 LT3D8B" below the LED.'}
+  - {page: 7, at: [3911, 2691], type: npn, ref: Q713, value: 2SC2240, status: confirmed,
+     why: 'Label "Q713 2SC2240" right of the symbol.'}
+  - {page: 7, at: [4185, 2089], type: resistor, ref: R747, value: 5.6k, status: confirmed,
+     why: 'Label "R747 5.6k" right of the symbol, under Q719; OCR fused it into "38747".'}
+  - {page: 7, at: [4645, 1963], type: capacitor_polarized, ref: C709, value: 22u, status: confirmed,
+     why: 'Label "C709 22/50V" (vertical) right of Q719.'}
+  - {page: 7, at: [4720, 2299], type: diode, ref: D729, status: confirmed,
+     why: 'Label "D729 3.6V" right of the zener (twin of D727). NB the parts list gives RD5.6 (5.6 V) zeners.'}
+  - {page: 7, at: [5818, 1901], type: npn, ref: Q731, value: 2SC4467, status: confirmed,
+     why: 'Label "Q731 2SC4467 O/P" above-left of the symbol (output NPN).'}
+  - {page: 7, at: [6274, 2080], type: resistor, ref: R787, value: 1k, status: confirmed,
+     why: 'Label "R787 1k 1/4W" left of the vertical resistor below the output line.'}
+  # --- left channel: wrong refs ---
+  - {page: 7, at: [2619, 2807], type: diode, ref: D701, status: confirmed,
+     why: 'Upper diode below Q703: label "D701 *" right of it. OCR gave it "D703", which labels the lower one.'}
+  - {page: 7, at: [2619, 2948], type: diode, ref: D703, status: confirmed,
+     why: 'Lower diode: label "D703" right of it.'}
+  - {page: 7, at: [3935, 2161], type: resistor, ref: R739, value: 330k, status: confirmed,
+     why: 'Label "R739 330k" left of the symbol (below R737). OCR gave it the "R749" label, which belongs to the resistor right of it.'}
+  - {page: 7, at: [4078, 2231], type: resistor, ref: R749, value: 12k, status: confirmed,
+     why: 'Label "R749 12k" upper left of the symbol, between R739 and R747.'}
+  - {page: 7, at: [6165, 1974], type: resistor, ref: R785, value: 1k, status: confirmed,
+     why: 'Horizontal resistor on the output line: label "R785 1k 1/4W" above it. OCR gave it "R787".'}
+  - {page: 7, at: [6458, 1561], type: capacitor_polarized, ref: CN05, value: 0.47u, status: confirmed,
+     why: 'Label "CN05 0.47/50V" left of the symbol, between the 58 V rail line and the QN03 base.'}
+  # --- right channel: refs OCR did not read ---
+  - {page: 7, at: [1963, 4510], type: capacitor_polarized, ref: C714, value: 10u, status: confirmed,
+     why: 'Label "C714 10/50V" below the symbol, after R702 (twin of C713).'}
+  - {page: 7, at: [2348, 4509], type: npn, ref: Q702-1, value: 2SC3067, status: confirmed,
+     why: 'Left half of the dual "Q702 2SC3067" (label vertical, right); its base takes the input (twin of Q701-1).'}
+  - {page: 7, at: [2499, 4508], type: npn, ref: Q702-2, value: 2SC3067, status: confirmed,
+     why: 'Right half of the dual Q702 (feedback side, -0.2V).'}
+  - {page: 7, at: [3237, 4291], type: pnp, ref: Q708, value: 2SA970, status: confirmed,
+     why: 'Label "Q708 2SA970" above the symbol (twin of Q707).'}
+  - {page: 7, at: [3632, 3820], type: led, ref: D716, value: LT3D8B, status: confirmed,
+     why: 'Label "D716 LT3D8B" above the LED (twin of D715).'}
+  - {page: 7, at: [3630, 4884], type: led, ref: D718, value: LT3D8B, status: confirmed,
+     why: 'Label "D718 LT3D8B" below the LED (twin of D717).'}
+  - {page: 7, at: [3648, 4682], type: resistor, value: 33k, status: confirmed,
+     why: 'R736: "33k" printed beside the ref; OCR gave it 330k (R740 value).'}
+  - {page: 7, at: [4005, 4538], type: resistor, ref: R750, value: 12k, status: confirmed,
+     why: 'Label "R750 12k" left of the symbol (twin of R749).'}
+  - {page: 7, at: [4312, 4307], type: darlington, ref: Q720, value: 2SD1508, status: confirmed,
+     why: 'Label "Q720 2SD1508" above the symbol (twin of Q719).'}
+  - {page: 7, at: [4573, 4271], type: capacitor_polarized, ref: C710, value: 22u, status: confirmed,
+     why: 'Label "C710 22/50V" (vertical) right of Q720 (twin of C709).'}
+  - {page: 7, at: [4181, 5137], type: photocoupler, ref: Q722, value: PC817, status: confirmed,
+     why: 'Label "Q722 PC817" left of the symbol (twin of Q721).'}
+  - {page: 7, at: [4720, 4392], type: diode, ref: D728, status: confirmed,
+     why: 'Label "D728 3.6V" right of the zener (twin of D727).'}
+  - {page: 7, at: [5184, 5205], type: diode, ref: D734, status: confirmed,
+     why: 'Label "D734 HSS81" left of the symbol (twin of D733).'}
+  - {page: 7, at: [5816, 4498], type: resistor_ct, ref: R782, value: "0.18", status: confirmed,
+     why: 'Label "R782 0.18X2 3W" left of the symbol (twin of R781); value per half.'}
+  - {page: 7, at: [6271, 4424], type: resistor, ref: R788, value: 1k, status: confirmed,
+     why: 'Label "R788 1k 1/4W" left of the vertical resistor (twin of R787).'}
+  - {page: 7, at: [6712, 4314], type: npn, ref: QN02, value: 2SC2240, status: confirmed,
+     why: 'Label "QN02 2SC2240" (vertical) right of the symbol (twin of QN01).'}
+  # --- right channel: wrong refs ---
+  - {page: 7, at: [2858, 4292], type: pnp, ref: Q706, value: 2SA970, status: confirmed,
+     why: 'Label "Q706 2SA970" left of the symbol; OCR gave it "Q705" (left channel).'}
+  - {page: 7, at: [3827, 4540], type: resistor, ref: R740, value: 330k, status: confirmed,
+     why: 'Label "R740 330k" left of the symbol (below R738). OCR gave it the "R750" label of its neighbour.'}
+  - {page: 7, at: [5055, 5028], type: pnp, ref: Q726, value: 2SA1145, status: confirmed,
+     why: 'Label "Q726 2SA1145 O/Y" left of the symbol; OCR gave it "Q734".'}
+  - {page: 7, at: [6162, 4319], type: resistor, ref: R786, value: 1k, status: confirmed,
+     why: 'Horizontal resistor on the output line: label "R786 1k 1/4W" above it. OCR gave it "R788".'}
+  # --- values OCR missed (common parts: value only on the schematic) ---
+  - {page: 7, at: [3648, 1018], type: resistor, value: 1k, status: confirmed, why: 'R729: "1k" printed under the ref.'}
+  - {page: 7, at: [3368, 2945], type: resistor, value: 1k, status: confirmed, why: 'R727: "1k" printed under the ref.'}
+  - {page: 7, at: [6560, 2579], type: resistor, value: 68k, status: confirmed, why: 'RN05: "68K" printed under the ref.'}
+  - {page: 7, at: [2018, 4409], type: resistor, value: 27k, status: confirmed, why: 'R704: "27k" printed under the ref (twin of R703).'}
+  - {page: 7, at: [2370, 5259], type: resistor, value: "180", status: confirmed, why: 'R712: "180" printed under the ref (twin of R711).'}
+  - {page: 7, at: [2837, 5257], type: resistor, value: 1k, status: confirmed, why: 'R726: "1k" printed under the ref (twin of R725).'}
+  # --- values OCR garbled (common parts); each matches its channel twin ---
+  - {page: 7, at: [2087, 1957], type: resistor, value: 27k, status: confirmed, why: 'R703: "27k" printed under the ref; OCR read "2".'}
+  - {page: 7, at: [1874, 4518], type: resistor, value: "330", status: confirmed, why: 'R702: "330" printed under the ref; OCR read "1".'}
+  - {page: 7, at: [3048, 4686], type: resistor, value: 47k, status: confirmed, why: 'R722: "47k" printed beside the ref; OCR read "4k".'}
+  - {page: 7, at: [3756, 1590], type: resistor, value: 33k, status: confirmed, why: 'R733: "33k" printed beside the ref; OCR read "33".'}
+  - {page: 7, at: [6382, 2223], type: resistor, value: 22k, status: proposed, why: 'RN01: "22K" printed beside the ref; OCR read "2k".'}
+  - {page: 7, at: [6559, 4140], type: resistor, value: 68k, status: confirmed, why: 'RN06: "68K" printed beside the ref; OCR read "8k".'}
+  # --- schematic values the printed voltages back over the parts list (another revision?) ---
+  - {page: 7, at: [3293, 909], type: resistor, value: "47", status: proposed,
+     over_list: 'Parts list 1k 1W. The printed 55.7 V -> 54.7 V drop across it (input-stage current) fits 47 ohm; 1k drops ~15 V (simulated 40.5 V vs 54.7 V printed).',
+     why: 'R789: "47 1W" printed under the ref (+54.7 V input-stage rail feed).'}
+  - {page: 7, at: [2729, 3054], type: resistor, value: "47", status: confirmed,
+     over_list: 'Parts list 1k 1W. The printed -56.0 V -> -55.5 V drop fits 47 ohm; 1k gives -45.5 V vs -55.5 V printed.',
+     why: 'R790: "47 1W" printed under the ref (-55.5 V input-stage rail feed).'}
+  - {page: 7, at: [4074, 911], type: resistor, value: "33", status: confirmed,
+     over_list: 'Parts list 47 ohm. The printed 56.7 V -> 55.7 V drop fits 33 ohm at the simulated ~31 mA (47 ohm drops ~1.5 V).',
+     why: 'R791: "33" printed under the ref (+55.7 V pre-driver line).'}
+  - {page: 7, at: [4040, 3049], type: resistor, value: "33", status: confirmed,
+     over_list: 'Parts list 47 ohm. The printed -57.0 V -> -56.0 V drop fits 33 ohm (twin of R791).',
+     why: 'R792: "33" printed under the ref (-56.0 V pre-driver line).'}
+annotations:
+  - {page: 7, at: [4822, 2032], voltage: 3.6, delete: true, status: confirmed,
+     why: '"3.6V" is the zener rating printed beside D727 (part of its label), not a node voltage.'}
+  - {page: 7, at: [5385, 3076], voltage: -57.0, net_pin: R792.2, status: proposed,
+     why: '"-57.0V" sits just under the line R792 feeds (the -57 V pre-driver rail, R792 33 from -56.0 V); nearest-wire put it on the photocoupler LED line below.'}
+  - {page: 7, at: [5292, 5350], voltage: -57.0, net_pin: R792.2, status: proposed,
+     why: 'Right-channel copy of the -57.0 V rail label (the same rail feeds Q726/Q730).'}
+  - {page: 7, at: [3843, 1177], voltage: 52.8, net_pin: Q711.B, status: proposed,
+     why: 'The "52.8V" arrow points at the Q711 base line (from D713/R729); nearest-wire put it on the Q711 emitter, printed 54.4V.'}
+  - {page: 7, at: [3331, 1787], voltage: -54.1, net_pin: Q707.C, status: proposed,
+     why: 'Second "-54.1V" (vertical) beside the Q707 collector line (twin of the right channel label at Q708.C); it was put on a wire stub with no part.'}
+  - {page: 7, at: [6647, 1881], voltage: 56.7, net_pin: QN01.C, status: proposed,
+     why: '"56.7V" right of QN01 marks its collector (RN03 bottom), twin of the right label at QN02.C; it was put on the QN03 base line, which has its own 56.7V.'}
+  - {page: 7, at: [3851, 2586], voltage: -52.5, delete: true, status: proposed,
+     why: 'Its arrow points between the Q713 base (printed -54.1V) and the Q717 base / D717 anode (printed -52.9V); it fits neither, so it is left out rather than guessed.'}
+  - {page: 7, at: [3625, 5036], voltage: -52.5, delete: true, status: proposed,
+     why: 'Right-channel twin of the ambiguous -52.5V label (left of Q714).'}
+  - {page: 7, at: [2539, 5403], voltage: -55.5, net_pin: R712.2, status: confirmed,
+     why: '"-55.5V" at the bottom of the right channel is on the -55.5 V rail (D704 cathode, R712 bottom); nearest-wire put it on the right signal ground line.'}
+  - {page: 7, at: [2333, 5098], voltage: -54.9, net_pin: Q704.E, status: proposed,
+     why: '"-54.9V" (vertical) beside R712 marks the Q704 emitter (twin of -54.9V at Q703.E); it was put on the rail.'}
+  - {page: 7, at: [2073, 4707], voltage: 0.3, net_pin: Q702-1.B, set_voltage: -0.3, status: confirmed,
+     why: 'The "0.3V" arrow points at the Q702-1 base (input). Printed without a minus; the left twin (Q701-1 base) is printed -0.3V and the channels are identical, so the minus is taken as lost in print.'}

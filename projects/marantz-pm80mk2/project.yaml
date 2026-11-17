@@ -1,0 +1,14 @@
+# Marantz PM-80 Mk II integrated amplifier (Philips/Marantz service manual, 1-bit scan).
+name: Marantz PM-80 Mk II
+pdf:
+  path: data/Marantz-PM-80-Mk2-Service-Manual.pdf
+  sha256: bb473adaf2b53796d0c1b7ca554bc77d361bd2109b955f43c45d4f2017e7a73a
+  source: Not distributed (copyright). Supply your own copy at the path above.
+# Sales variant of the unit being modelled: parts-list rows marked [/20B/21B/21G] vs
+# [/22B/22G] differ (C401/C402, RN10...). Without one they are reported, never guessed.
+variant: 22B
+parts_list:
+  pages: [13, 14, 15, 16, 17]          # PDF pages (printed pp. 19-23)
+  part_number: '^4822\s*\d{3}\s*\d{5}$'  # Philips 12NC, anchors each row
+ocr:
+  module_ref_letter: M   # module refs QM11, RM13...: an OCR'd "QN13" is read "QM13"

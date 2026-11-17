@@ -1,0 +1,67 @@
+# Corrections for crop p401l (pages/page-04.png, P401 phono left channel + PM31).
+# Each component item matches the detected symbol of `type` whose centre is within
+# 40 px of `at` (page px) on PDF page `page`, and overrides its ref and/or value.
+# Each annotation item matches the printed-voltage label whose box centre is within
+# 40 px of `at` and moves it to the net of `net_pin` (or `delete: true`).
+# status: proposed (read off the scan by Claude, unchecked) | confirmed.
+# Only confirmed items apply unless `extract --proposed` is passed.
+# page: PDF page (tools' numbering). PDF 4 = printed pp. 3/4; this crop is on printed p. 3.
+components:
+  # --- refs OCR did not read ---
+  - {page: 4, at: [1883, 1330], type: inductor, ref: L401, status: confirmed,
+     why: 'Label "L401" above the coil, in the left-channel input line after J401.'}
+  - {page: 4, at: [1897, 1657], type: inductor, ref: L402, status: confirmed,
+     why: 'Label "L402" (vertical) below the coil, on the right-channel input line.'}
+  - {page: 4, at: [1086, 1394], type: capacitor, ref: C421, value: 0.01u, status: confirmed,
+     why: 'Label "C421 0.01" above the upper capacitor left of J401.'}
+  - {page: 4, at: [1086, 1451], type: capacitor, ref: C422, value: 0.01u, status: confirmed,
+     why: 'Label "C422 0.01" below the lower capacitor; OCR read "8.3" as its value.'}
+  - {page: 4, at: [1980, 1645], type: resistor, ref: R403, value: "100", status: confirmed,
+     why: 'Label "R403" (vertical) and "100" beside the symbol, parallel to C403.'}
+  - {page: 4, at: [2063, 1330], type: resistor, ref: R401, value: "33", status: confirmed,
+     why: 'Label "R401 33" above the symbol; OCR read the ref as "R40".'}
+  - {page: 4, at: [2240, 1410], type: capacitor, ref: C401, value: 220p, status: confirmed,
+     why: 'Label "C401 220p" (vertical) above. NB the parts list gives 100p or 330p by variant, not 220p.'}
+  - {page: 4, at: [2300, 2724], type: resistor, ref: R413, value: "150", status: confirmed,
+     why: 'Label "R413 150" left of the symbol, below S403.'}
+  - {page: 4, at: [2443, 2354], type: resistor, ref: R409, value: 82k, status: confirmed,
+     why: 'Label "R409 82k" above the symbol, above C407.'}
+  - {page: 4, at: [3492, 1694], type: diode, ref: DM33, status: confirmed,
+     why: 'Label "DM33 *" left of the symbol, below QM33.'}
+  - {page: 4, at: [4052, 1307], type: capacitor_polarized, ref: C419, value: 470u, status: confirmed,
+     why: 'Label "C419 470/25V" right of the symbol, on the +17.2 V rail.'}
+  - {page: 4, at: [4053, 1791], type: capacitor_polarized, ref: C420, value: 470u, status: confirmed,
+     why: 'Label "C420 470/25V" right of the symbol, on the -17.2 V rail.'}
+  - {page: 4, at: [4757, 1485], type: capacitor_polarized, ref: C415, value: 10u, status: confirmed,
+     why: 'Label "C415 10/50V" above the symbol, at the op-amp output.'}
+  - {page: 4, at: [5000, 1490], type: resistor, ref: R423, value: "330", status: confirmed,
+     why: 'Label "R423 330" above the symbol, after C415.'}
+  - {page: 4, at: [4504, 1489], type: opamp, ref: Q401-1, value: NJM2068DD, status: confirmed,
+     why: 'Label "Q401-1 NJM2068DD" below the triangle.'}
+  # --- S403 MM/MC: one item per pole, numbered top-left, top-right, bottom-left, bottom-right ---
+  - {page: 4, at: [2090, 2442], type: switch_spdt, ref: S403-1, status: confirmed,
+     why: 'Upper-left pole of S403 (label "S403" below the lower section).'}
+  - {page: 4, at: [2159, 2441], type: switch_spdt, ref: S403-2, status: confirmed, why: Upper-right pole of S403.}
+  - {page: 4, at: [2091, 2640], type: switch_spdt, ref: S403-3, status: confirmed, why: Lower-left pole of S403.}
+  - {page: 4, at: [2159, 2640], type: switch_spdt, ref: S403-4, status: confirmed, why: Lower-right pole of S403.}
+  # --- wrong ref ---
+  - {page: 4, at: [2441, 2243], type: resistor, ref: R407, value: 2.2M, status: confirmed,
+     why: 'Label above reads "R407 2.2M". OCR gave it the "R409" label, which belongs to the resistor below.'}
+  # --- values OCR missed or garbled (common parts: value only on the schematic) ---
+  - {page: 4, at: [2152, 1414], type: resistor, value: 47k, status: confirmed,
+     why: 'R405: "47k" printed under the ref; OCR missed it.'}
+  - {page: 4, at: [2529, 2555], type: resistor, value: 1M, status: confirmed,
+     why: 'R417: "1M" printed under the ref; OCR missed it.'}
+  - {page: 4, at: [4137, 1519], type: resistor, value: "33", status: confirmed,
+     why: 'R419: "33" printed beside it; OCR read "3".'}
+  - {page: 4, at: [3492, 1806], type: resistor, value: 1k, status: confirmed,
+     why: 'RM34: "1K" printed under the ref; OCR read "03".'}
+annotations:
+  - {page: 4, at: [3361, 1921], voltage: -17.2, net_pin: JM31.6, status: proposed,
+     why: '"-17.2V" sits above the -17.2 V rail at the bottom of PM31; nearest-wire put it on the module output, which loops past.'}
+  - {page: 4, at: [3859, 1507], voltage: -15.7, net_pin: QM36.E, status: confirmed,
+     why: 'The "-15.7V" arrow points at the QM36 emitter / RM35 top.'}
+  - {page: 4, at: [3031, 1410], voltage: 0.0, net_pin: QM32.G, status: proposed,
+     why: '"0V" left of QM32 marks its gate (the J406.2 feedback input).'}
+  - {page: 4, at: [3349, 1236], voltage: 16.7, net_pin: RM32.2, status: proposed,
+     why: '"16.7V" above QM31 marks the RM32 / QM31 drain / QM35 emitter line, not the QM31 gate.'}

@@ -1,0 +1,45 @@
+# Corrections for crop p501 (pages/page-04.png, P501 volume board, both channels).
+# Same rules as corrections/p501l.yaml, whose items (left channel) are included.
+# status: proposed (read off the scan by Claude, unchecked) | confirmed.
+# page: PDF page (tools' numbering). PDF 4 = printed pp. 3/4; P501 is on printed p. 4.
+include: [p501l]
+components:
+  # --- right channel (PM21 and its P501 parts): refs OCR did not read ---
+  - {page: 4, at: [7698, 3475], type: pnp, ref: QM24, value: 2SA970, status: proposed,
+     why: 'Label "QM24 2SA970" above the symbol (twin of QM14).'}
+  - {page: 4, at: [8311, 3477], type: diode, ref: D504, status: proposed,
+     why: 'Label "D504 *" right of the symbol, below D502 (twin of D503).'}
+  - {page: 4, at: [8453, 3562], type: resistor, ref: R522, value: "10", status: proposed,
+     why: 'Label "R522 10" right of the symbol, above Q504 (twin of R521).'}
+  - {page: 4, at: [8311, 3590], type: resistor, ref: R518, value: "100", status: proposed,
+     why: 'Label "R518 100" right of the symbol; OCR read the ref as "R51B".'}
+  - {page: 4, at: [6498, 3594], type: resistor, ref: R502, value: 220k, status: proposed,
+     why: 'Label "R502 220k" left of the symbol, beside R529-4; OCR read "22823".'}
+  - {page: 4, at: [8685, 3704], type: resistor, ref: R524, value: 100k, status: proposed,
+     why: 'Label "R524 100k" right of the symbol (twin of R523).'}
+  - {page: 4, at: [8541, 3845], type: capacitor, ref: C508, value: 22p, status: proposed,
+     why: 'Label "C508 22pF 500V" below the symbol (twin of C507).'}
+  - {page: 4, at: [6392, 3507], type: potentiometer, ref: R529-4, value: 250k, status: proposed,
+     why: 'Label "R529-4" left of the symbol; OCR read "R529". Right-channel volume section, 250k as R529-2 (inferred, not printed).'}
+  # --- right channel: values OCR missed (common parts: value only on the schematic) ---
+  - {page: 4, at: [6392, 3222], type: potentiometer, value: 2k, status: proposed,
+     why: 'R529-3: no value printed; rheostat in the AC feedback leg with R506 220, the 2k section as R529-1 (inferred, not read).'}
+  - {page: 4, at: [7822, 3648], type: resistor, value: 33k, status: proposed,
+     why: 'RM26: "33K" printed under the ref (twin of RM16).'}
+  - {page: 4, at: [7962, 3876], type: resistor, ref: RM25, value: 1k, status: proposed,
+     why: 'Label "RM25 1K" left of the symbol (twin of RM15); OCR read the ref as "RN25" and missed the value.'}
+  - {page: 4, at: [7680, 3990], type: resistor, value: 1k, status: proposed,
+     why: 'RM24: "1K" printed under the ref (twin of RM14).'}
+  - {page: 4, at: [7096, 2765], type: capacitor, value: 47p, status: proposed,
+     why: 'C504: "47p/500V" printed beside it (twin of C503); OCR read "470/500V".'}
+  - {page: 4, at: [8610, 3471], type: capacitor_polarized, value: 10u, status: proposed,
+     why: 'C510: "10/50V" printed below the ref (twin of C509).'}
+  - {page: 4, at: [8690, 2780], type: capacitor_polarized, value: 330u, status: proposed,
+     why: 'C512: "330/16V" printed beside the ref (left of the C511/C512 pair).'}
+annotations:
+  - {page: 4, at: [8193, 3317], voltage: 6.0, delete: true, status: proposed,
+     why: 'Printed "6.0V" at the Q502 base, a misprint: the same net is printed 0.6V at the QM25 collector, and the left twin (Q501 base) is printed 0.6V. 6.0 V there is impossible with the output at -0.02 V.'}
+  - {page: 4, at: [8517, 3617], voltage: -0.04, net_pin: Q504.E, status: proposed,
+     why: '"-0.04V" right of R522 marks the R522 / Q504 emitter node (twin of the left -0.04V at Q503.E); nearest-wire put it on a wire stub with no part. OCR read it "F0.04V" (wire touching the minus).'}
+  - {page: 4, at: [8611, 3207], voltage: -0.02, net_pin: Q502.E, status: proposed,
+     why: 'The "-0.02V" arrow ends at R520 by the Q502 emitter, as its left twin does at R519 / Q501.E; the label was put on the C510 + side (coupled output).'}

@@ -1,0 +1,121 @@
+* Discrete semiconductor models for schem2spice.
+* These are NOT vendor models. Parameters are approximations built from
+* typical datasheet figures (see models/map.yaml for the derivation of each).
+* Replace with vendor/verified models when available.
+
+* 2SK369 BL: N-JFET, Idss 6-12 mA (BL rank, typ ~9 mA), |Yfs| ~40 mS,
+* Ciss 75 pF, Crss 15 pF. Level-1: gm0 = 2*Idss/|VTO| -> VTO = -0.45 V,
+* BETA = Idss/VTO^2.
+.model 2SK369-BL NJF(VTO=-0.45 BETA=44.4m LAMBDA=5m RD=5 RS=5
++ CGS=60p CGD=15p IS=1f)
+
+* 2SC2240: NPN low-noise, Vceo 120 V, hFE GR/BL 200-700, fT 100 MHz, Cob 3 pF.
+* IS chosen for Vbe ~0.62 V at 1 mA.
+.model 2SC2240 NPN(IS=40f BF=400 VAF=150 BR=5 IKF=0.1 NF=1
++ RB=10 RE=0.3 RC=1 CJE=15p CJC=3.5p TF=1.5n TR=50n)
+
+* 2SA970: PNP complement of 2SC2240, Cob ~4 pF.
+.model 2SA970 PNP(IS=40f BF=400 VAF=100 BR=5 IKF=0.1 NF=1
++ RB=10 RE=0.3 RC=1 CJE=18p CJC=5p TF=1.5n TR=50n)
+
+* 2SC2705 O/Y: NPN driver, Vceo 150 V, hFE O/Y 80-240, fT 200 MHz, Cob 1.8 pF.
+.model 2SC2705 NPN(IS=20f BF=150 VAF=150 BR=5 IKF=0.15 NF=1
++ RB=20 RE=0.5 RC=2 CJE=8p CJC=2p TF=0.7n TR=50n)
+
+* 2SA1145 O/Y: PNP complement of 2SC2705, Cob ~2.5 pF.
+.model 2SA1145 PNP(IS=20f BF=150 VAF=120 BR=5 IKF=0.15 NF=1
++ RB=20 RE=0.5 RC=2 CJE=9p CJC=2.5p TF=0.7n TR=50n)
+
+* 1SS176: small-signal switching diode; 1N4148-class parameters
+* (Vf ~0.58 V at 1 mA).
+.model 1SS176 D(IS=2.52n N=1.752 RS=0.568 BV=80 IBV=0.1u CJO=4p M=0.4 TT=20n)
+
+* --- P701 power amp ---
+
+* 2SC3067 (G/H rank): dual-pair input transistor, small-signal NPN. No datasheet on
+* hand; modelled as the 2SC2240 (low-noise small-signal NPN, hFE ~400).
+.model 2SC3067 NPN(IS=40f BF=400 VAF=150 BR=5 IKF=0.1 NF=1
++ RB=10 RE=0.3 RC=1 CJE=15p CJC=3.5p TF=1.5n TR=50n)
+
+* 2SC4883 O/Y: NPN pre-driver/driver, Vceo 150 V, Ic 2 A, hFE O/Y ~70-240, fT ~120 MHz,
+* Cob ~25 pF. IS chosen for Vbe ~0.6 V at 10 mA.
+.model 2SC4883 NPN(IS=0.8p BF=120 VAF=150 BR=5 IKF=1 NF=1
++ RB=5 RE=0.1 RC=0.3 CJE=100p CJC=25p TF=1.3n TR=100n)
+
+* 2SA1859 O/Y: PNP complement of 2SC4883, Cob ~35 pF.
+.model 2SA1859 PNP(IS=0.8p BF=120 VAF=120 BR=5 IKF=1 NF=1
++ RB=5 RE=0.1 RC=0.3 CJE=110p CJC=35p TF=1.3n TR=100n)
+
+* 2SC4467 O/P: NPN output, Vceo 120 V, Ic 8 A, Pc 80 W, hFE O/P ~50-180, fT ~20 MHz.
+* IS chosen for Vbe ~0.6 V at 50 mA.
+.model 2SC4467 NPN(IS=4p BF=100 VAF=100 BR=5 IKF=3 NF=1
++ RB=2 RE=0.02 RC=0.05 CJE=1n CJC=200p TF=8n TR=500n)
+
+* 2SA1694 O/P: PNP complement of 2SC4467, Cob ~300 pF.
+.model 2SA1694 PNP(IS=4p BF=100 VAF=80 BR=5 IKF=3 NF=1
++ RB=2 RE=0.02 RC=0.05 CJE=1.2n CJC=300p TF=8n TR=500n)
+
+* HSS81TD: small-signal switching diode; 1N4148-class parameters like 1SS176.
+.model HSS81TD D(IS=2.52n N=1.752 RS=0.568 BV=80 IBV=0.1u CJO=4p M=0.4 TT=20n)
+
+* LT3D8B: red LED (GaAsP), Vf ~1.7 V at 1 mA, ~1.9 V at 10 mA.
+.model LT3D8B D(IS=1e-19 N=1.8 RS=5 BV=5 IBV=10u CJO=20p)
+
+* RD5.6JB2 / MTZJ5.6B: 5.6 V zener (the schematic prints 3.6V beside D727-D730).
+.model RD5.6JB2 D(IS=1n N=1.5 RS=2 BV=5.6 IBV=5m CJO=100p)
+
+* 2SD1508: NPN Darlington (drawn as one in the P701 bias stage). Driver 2SC2240-class,
+* output 2SC4883-class, internal base-emitter resistor on the output stage.
+.subckt 2SD1508 C B E
+Q1 C B 1 2SC2240
+Q2 C 1 E 2SC4883
+R1 1 E 3k
+.ends
+
+* PC817: photocoupler. Input LED (Vf ~1.2 V at 10 mA); the phototransistor carries the
+* LED current times CTR (100 %), fading out below ~0.1 V across it (saturation).
+* Pins: A K C E.
+.model PC817LED D(IS=1e-14 N=1.9 RS=3)
+.subckt PC-817 A K C E
+D1 A 1 PC817LED
+VS 1 K 0
+B1 C E I = i(VS) * 1.0 * tanh(max(v(C,E), 0) / 0.1)
+RL C E 1G
+.ends
+
+* --- P851 power supply ---
+
+* S5688G: 1 A general-purpose rectifier diode (Vf ~0.9 V at 1 A).
+.model S5688G D(IS=10n N=1.8 RS=0.05 BV=400 IBV=5u CJO=30p TT=2u)
+
+* RD20JB2 / MTZJ20C: 20 V zener (D863/D864 printed "20.0V").
+.model RD20JB2 D(IS=1n N=1.5 RS=10 BV=20 IBV=5m CJO=40p)
+
+* RD7.5JB2 / MTZJ7.5C: 7.5 V zener (D877/D878).
+.model RD7.5JB2 D(IS=1n N=1.5 RS=5 BV=7.5 IBV=5m CJO=70p)
+
+* 2SD1417: NPN Darlington pass transistor (+18 V regulator). 2SC2240-class driver,
+* 2SC4883-class output, internal B-E resistor on the output stage.
+.subckt 2SD1417 C B E
+Q1 C B 1 2SC2240
+Q2 C 1 E 2SC4883
+R1 1 E 3k
+.ends
+
+* 2SB1022: PNP Darlington pass transistor (-18 V regulator), complement of 2SD1417.
+.subckt 2SB1022 C B E
+Q1 C B 1 2SA970
+Q2 C 1 E 2SA1859
+R1 1 E 3k
+.ends
+
+* NJM7824 (schematic NJM78M24A): 24 V three-terminal regulator, behavioral. Output 24 V
+* nominal (datasheet +-4 %), ~2 V dropout, 0.05 ohm output resistance, 5 mA quiescent.
+* The output current is drawn from IN (F1), so the input supply carries the load.
+.subckt NJM7824 IN GND OUT
+B1 x GND V = min(24.0, max(V(IN,GND) - 2.0, 0))
+RO x y 0.05
+VS y OUT 0
+F1 IN GND VS 1
+IQ IN GND 5m
+.ends
